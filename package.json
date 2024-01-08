@@ -13,6 +13,11 @@
   "license": "ISC",
   "dependencies": {
     "@hexlet/chat-server": "^1.1.8",
-    "create-react-app": "^5.0.1"
+    "@rollbar/react": "^0.11.2",
+    "create-react-app": "^5.0.1",
+    "i18next": "^23.7.15",
+    "react-i18next": "^14.0.0",
+    "react-redux": "^9.0.4",
+    "rollbar": "^2.26.2"
   }
 }
