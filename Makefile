@@ -5,7 +5,7 @@ install:
 	npm ci
 
 start-frontend:
-	npm -C frontend start
+	make -C frontend start
 
 start-backend:
 	npx start-server
