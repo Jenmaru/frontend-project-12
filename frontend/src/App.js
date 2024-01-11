@@ -1,12 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { MainPage } from './components/MainPage';
-import ChatPage from './components/chatPage';
 import path from './pathes';
 import React, { useEffect, useState } from 'react';
-
-import { Provider, ErrorBoundary } from '@rollbar/react';
+import SignUpPage from './pages/signUpPage';
+import ChatPage from './pages/chatPage';
+import MainPage from './pages/mainPage';
+import { Provider } from '@rollbar/react';
 import AuthContext from './contexts/index';
 import { ChatProvider } from './contexts/chatContext';
+import ru from "./locales/ru";
+import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 const AuthProvider = ({ children }) => {
@@ -43,6 +45,14 @@ const Access = ({ children }) => {
 };
 
 const App = ({ socket }) => {
+  i18next
+      .use(initReactI18next)
+      .init({
+        lng: 'ru',
+        resources: {
+          ru,
+        },
+      });
 
   useEffect(() => {
     socket.on('connect_error', (e) => {
@@ -66,6 +76,7 @@ const App = ({ socket }) => {
         )} />
         <Route path={path.login} element={<MainPage />} />
         <Route path={path.chat} element={<ChatPage />} />
+        <Route path={path.signup} element={<SignUpPage />} />
       </Routes>
       </AuthProvider>
     </BrowserRouter>

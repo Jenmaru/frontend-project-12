@@ -11,7 +11,8 @@ const ChannelItem = (props) => {
       channel,
       currentChannel,
       setCurrentChannel,
-      removeChannel,
+      onChange,
+      setId
     } = props;
   
     return (
@@ -39,7 +40,6 @@ const ChannelItem = (props) => {
                 className="w-100 rounded-0 text-start text-truncate"
               >
                 <span className="me-1">#</span>
-                {' '}
                 {channel.name}
               </Button>
               <Dropdown.Toggle
@@ -52,15 +52,23 @@ const ChannelItem = (props) => {
               <Dropdown.Menu>
                 <Dropdown.Item
                   href="#"
-                  handleClick={removeChannel()}
+                  onClick={() => {
+                    setId(channel)
+                    onChange(false, 'removeChannel')}
+                  }
+                  id={channel.id}
                 >
-                  {'remove'}
+                  {'Удалить'}
                 </Dropdown.Item>
                 <Dropdown.Item
                   href="#"
-                  
+                  onClick={() => {
+                    setId(channel)
+                    onChange(false, 'renameChannel')}
+                  }
+                  id={channel.id}
                 >
-                  {'rename'}
+                  {'Переименовать'}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -69,16 +77,16 @@ const ChannelItem = (props) => {
     );
   };
 
-const ChannelsComponent = ({ onChange }) => {
+const ChannelsComponent = ({ onChange, setId }) => {
     const channels = useSelector(selectors.selectAll);
     const chatContext = useContext(ChatContext);
-    const { currentChannel, setCurrentChannel, removeChannel } = chatContext;
+    const { currentChannel, setCurrentChannel } = chatContext;
 
     return (
         <>
-        <div className="d-flex justify-content-between mb-2 ps-4 pe-2 p-4">
+        <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
             <b>Каналы</b>
-        <button onClick={() => onChange(false)} type="button" className="p-0 text-primary btn btn-group-vertical">
+        <button onClick={() => onChange(false, 'addChannel')} type="button" className="p-0 text-primary btn btn-group-vertical">
           <PlusSquare height="20" width="20" />
           <span className="visually-hidden">+</span>
         </button>
@@ -90,7 +98,8 @@ const ChannelsComponent = ({ onChange }) => {
             channel={channel}
             currentChannel={currentChannel}
             setCurrentChannel={setCurrentChannel}
-            removeChannel={removeChannel}
+            onChange={onChange}
+            setId={setId}
           />
         ))}
       </ul>

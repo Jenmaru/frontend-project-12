@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import useAuth from '../hooks/index';
 import routes from '../hooks/routes.js';
 import axios from 'axios';
+import Header from "../components/header";
 
 const loginSchema = Yup.object().shape({
   username: Yup.string()
@@ -60,16 +61,15 @@ const MainPage = () => {
     <div className='h-100'>
     <div id='chat' className='h-100'>
     <div className='d-flex flex-column h-100'>
-    <nav className='shadow-sm navbar navbar-expand-lg navbar-light bg-white'>
-        <div className='container'>
-            <a className='navbar-brand' href='/'>Hexlet Chat</a>
-        </div>
-    </nav>
+    <Header />
     <div className='container-fluid h-100'>
     <div className='row justify-content-center align-content-center h-100'>
     <div className="col-12 col-md-8 col-xxl-6">
       <div className="card shadow-sm">
         <div className="card-body row p-5">
+          <div className='col-12 col-md-6 d-flex align-items-center justify-content-center'>
+            <img className='rounded-circle' alt='Войти' />
+          </div>
           <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
             <fieldset disabled={formik.isSubmitting}>
                 <h1 className='text-center mb-4'>Войти</h1>
@@ -85,6 +85,7 @@ const MainPage = () => {
                   placeholder="Ваш ник"
                   ref={inputRef}
                 />
+                <label for='username'>Ваш ник</label>
                 {formik.errors.username && formik.touched.username && (
                     <div className='text-danger'>{formik.errors.username}</div>
                 )}
@@ -101,11 +102,19 @@ const MainPage = () => {
                   isInvalid={authFailed}
                   required
                 />
+                <label for='password'>Пароль</label>
                 <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
               </Form.Group>
               <Button type="submit" variant="outline-primary w-100 mb-3">Войти</Button>
             </fieldset>
           </Form>
+        </div>
+        <div className='card-footer p-4'>
+          <div className='text-center'>
+            <span>Нет аккаунта?</span>
+            {' '}
+            <a href='/signup'>Регистрация</a>
+          </div>
         </div>
       </div>
     </div>
@@ -117,4 +126,4 @@ const MainPage = () => {
   )
 };
 
-export { MainPage };
+export default MainPage;

@@ -2,7 +2,6 @@ import { createContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions as messagesActions } from '../reducers/Messages.js';
 import { actions as channelsActions, selectors } from '../reducers/Channels.js';
-import modalAction from '../components/modalAction.js';
 
 const ChatContext = createContext({});
 

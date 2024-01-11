@@ -1,16 +1,17 @@
 import axios from 'axios';
 import React, { useEffect, useContext, useState } from 'react';
-import { Button, Nav } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { actions as channelsAction } from '../reducers/Channels.js';
 import { actions as messagesAction } from '../reducers/Messages.js';
 import routes from '../hooks/routes';
 import ChatContext from '../contexts/chatContext';
-import useAuth from '../hooks/index.jsx';
-import ChannelsComponent from './channelsComponent';
-import MessagesComponent from './messagesComponent';
-import RenderMessageComponent from './renderMessage';
-import Modal from './modalPage.jsx';
+import Header from "../components/header.jsx";
+import ChannelsComponent from '../components/channelsComponent';
+import MessagesComponent from '../components/messagesComponent';
+import RenderMessageComponent from '../components/renderMessage';
+import AddModal from '../modals/addModalWindow.jsx';
+import RenameModal from '../modals/renameModalWindow.jsx';
+import RemoveModal from '../modals/removeModalWindow.jsx';
 
 const ChatPage = () => {
     const dispatch = useDispatch();
@@ -23,10 +24,20 @@ const ChatPage = () => {
       currentChannel,
     } = chatContext;
     const [ value, setValue ] = useState(true);
-    const handleChange = (value) => {
+    const [ modalType, setModalType ] = useState('');
+    const [ channelId, setChannelId ] = useState('');
+    const setId = (id) => {
+      setChannelId(id);
+    }
+    const handleChange = (value, type) => {
       setValue(value);
+      setModalType(type);
     };
-    console.log(value)
+    const setModal = {
+      addChannel: <AddModal onChange={handleChange} channel={channelId} />,
+      removeChannel: <RemoveModal onChange={handleChange} channel={channelId}/>,
+      renameChannel: <RenameModal onChange={handleChange} channel={channelId}/>,
+    }
     
     useEffect(() => {
       const getResponse = async () => {
@@ -51,31 +62,16 @@ const ChatPage = () => {
       subscribeRenameChannel();
     });
 
-    const AuthButton = () => {
-        const auth = useAuth();
-      
-        return (
-          auth.loggedIn
-            ? <Button onClick={auth.logOut}>Выйти</Button>
-            : null
-        );
-      };
-
   return (
     <>
     <div className='h-100'>
       <div id='chat' className='h-100'>
         <div className='d-flex flex-column h-100'>
-          <Nav className='shadow-sm navbar navbar-expand-lg navbar-light bg-white'>
-            <div className='container'>
-              <a className='navbar-brand' href='/'>Hexlet Chat</a>
-                <AuthButton />
-            </div>
-          </Nav>
+          <Header />
             <div className="container h-100 my-4 overflow-hidden rounded shadow">
               <div className="row h-100 bg-white flex-md-row">
                 <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-                  <ChannelsComponent onChange={handleChange} />
+                  <ChannelsComponent onChange={handleChange} setId={setId}/>
                 </div>
                   <div className="col p-0 h-100">
                     <div className='d-flex flex-column h-100'>
@@ -98,7 +94,7 @@ const ChatPage = () => {
           </div>
         </div>
      </div>
-    {value === false ? <Modal onChange={handleChange} /> : null}
+    {value === false ? setModal[modalType] : null}
     </>
   );
 };

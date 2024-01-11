@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef, useEffect, } from 'react';
 import { InputGroup, Form, Button } from 'react-bootstrap';
-
+import { ArrowRightSquare } from 'react-bootstrap-icons';
 import ChatContext from '../contexts/chatContext';
 
 const MessagesComponent = () => {
@@ -24,6 +24,7 @@ const MessagesComponent = () => {
   });
 
   return (
+    <>
     <Form
       className="py-1 border rounded-2"
       novalidate=''
@@ -35,23 +36,23 @@ const MessagesComponent = () => {
       <InputGroup className='has-validation'>
         <Form.Control
           name='body'
-          type="text"
           placeholder='Введите сообщение...'
           value={text}
           onChange={(e) => setText(e.target.value)}
           aria-label="Новое сообщение..."
-          className="border-0 p-0 ps-2 form-control"
+          className="border-0 p-0 ps-2"
           noValidate=''
           ref={ref}
         />
-        <Button variant="group-vertical" type="submit" disabled={text === ''}>
-          
+        <Button variant="group-vertical btn-light" type="submit" disabled={text === ''}>
+        <ArrowRightSquare width="20" height="20" />
           <span className="visually-hidden">
             Отправить
           </span>
         </Button>
       </InputGroup>
     </Form>
+    </>
   );
 };
 
