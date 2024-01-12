@@ -46,13 +46,10 @@ const Access = ({ children }) => {
 };
 
 const rollbarConfig = {
-  accessToken: 'd172c2454e5c4eaf85d11bb98210b492',
-  environment: 'testenv',
-}
-
-function TestError() {
-  const a = null
-  return a.hello()
+  accessToken: process.env.TOKEN_ROLLBAR,
+  environment: process.env.ENVIRONMENT_ROLLBAR,
+  captureUncaught: true,
+  captureUnhandledRejections: true,
 }
 
 const rollbar = new Rollbar(rollbarConfig);
