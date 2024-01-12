@@ -4,6 +4,7 @@ import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { selectors } from '../reducers/Channels';
 import { PlusSquare } from 'react-bootstrap-icons';
 import ChatContext from '../contexts/chatContext';
+import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 
 const ChannelItem = (props) => {
@@ -12,7 +13,8 @@ const ChannelItem = (props) => {
       currentChannel,
       setCurrentChannel,
       onChange,
-      setId
+      setId,
+      t,
     } = props;
   
     return (
@@ -58,7 +60,7 @@ const ChannelItem = (props) => {
                   }
                   id={channel.id}
                 >
-                  {'Удалить'}
+                  {t('chatPage.channels.remove')}
                 </Dropdown.Item>
                 <Dropdown.Item
                   href="#"
@@ -68,7 +70,7 @@ const ChannelItem = (props) => {
                   }
                   id={channel.id}
                 >
-                  {'Переименовать'}
+                  {t('chatPage.channels.rename')}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -81,11 +83,12 @@ const ChannelsComponent = ({ onChange, setId }) => {
     const channels = useSelector(selectors.selectAll);
     const chatContext = useContext(ChatContext);
     const { currentChannel, setCurrentChannel } = chatContext;
+    const { t } = useTranslation();
 
     return (
         <>
         <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-            <b>Каналы</b>
+            <b>{t('chatPage.channels.title')}</b>
         <button onClick={() => onChange(false, 'addChannel')} type="button" className="p-0 text-primary btn btn-group-vertical">
           <PlusSquare height="20" width="20" />
           <span className="visually-hidden">+</span>
@@ -100,6 +103,7 @@ const ChannelsComponent = ({ onChange, setId }) => {
             setCurrentChannel={setCurrentChannel}
             onChange={onChange}
             setId={setId}
+            t={t}
           />
         ))}
       </ul>

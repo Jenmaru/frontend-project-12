@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import ChatContext from '../contexts/chatContext';
 import { useTranslation } from 'react-i18next';
 
-const RemoveModal = ({ onChange, channel }) => {
+const RemoveModal = ({ onChange, channel, toastMessage }) => {
     const { t } = useTranslation();
     const chatContext = useContext(ChatContext);
     const { removeChannel } = chatContext;
@@ -15,8 +15,9 @@ const RemoveModal = ({ onChange, channel }) => {
         try {
             removeChannel(channel.id);
             onChange(true);
-        } catch(e) {
-            console.log(e)
+            toastMessage(t('toast.channelRemove'), 'success');
+        } catch {
+            toastMessage(t('toast.error'), 'error');
         }
       };
 

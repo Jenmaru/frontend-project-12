@@ -6,27 +6,27 @@ import ChatContext from '../contexts/chatContext.jsx';
 const RenderMessageComponent = () => {
   const chatContext = useContext(ChatContext);
   const { currentChannel } = chatContext;
-  const lastMessageRef = useRef();
+  const messageRef = useRef();
   const messages = useSelector(selectors.selectAll);
 
-  const filteredMessages = messages.filter((message) => message.channelId === currentChannel.id);
+  const currentMessages = messages.filter((message) => message.channelId === currentChannel.id);
 
   useEffect(() => {
-    lastMessageRef.current.scrollIntoView({
+    messageRef.current.scrollIntoView({
       behavior: 'smooth',
     });
-  }, [filteredMessages]);
+  }, [currentMessages]);
 
   return (
     <>
-      { filteredMessages.map((message) => (
+      { currentMessages.map((message) => (
         <div key={message.id} className="text-break mb-2">
           <b>{message.username}</b>
           :
           {` ${message.body}`}
         </div>
       ))}
-      <span ref={lastMessageRef} />
+      <span ref={messageRef} />
     </>
   );
 };

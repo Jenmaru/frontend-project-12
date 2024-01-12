@@ -12,7 +12,7 @@ const validate = Yup.object().shape({
       .required('От 3 до 20 символов'),
   });
 
-const RenameModal = ({ onChange, channel }) => {
+const RenameModal = ({ onChange, channel, toastMessage }) => {
     const { t } = useTranslation();
     const inputRef = useRef();
     const chatContext = useContext(ChatContext);
@@ -30,8 +30,13 @@ const RenameModal = ({ onChange, channel }) => {
           channelname: channel.name,
         },
         onSubmit: (values) => {
+            try {
             renameChannel(channel.id, values.channelname);
             onChange(true);
+            toastMessage(t('toast.channelRename'), 'success');
+            } catch {
+                toastMessage(t('toast.error'), 'error'); 
+            }
       },
         validationSchema: validate,
         validateOnChange: false,

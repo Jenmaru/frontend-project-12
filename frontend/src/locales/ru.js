@@ -56,7 +56,7 @@ export default {
             inputHolder: "Введите сообщение...",
             renderMessage: "Новое сообщение",
         },
-        feedback: {
+        toast: {
             error: "Ошибка",
             networkError: "Ошибка соединения",
             channelAdd: "Канал создан",

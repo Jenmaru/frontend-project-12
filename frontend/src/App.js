@@ -4,12 +4,13 @@ import React, { useEffect, useState } from 'react';
 import SignUpPage from './pages/signUpPage';
 import ChatPage from './pages/chatPage';
 import MainPage from './pages/mainPage';
-import { Provider } from '@rollbar/react';
 import AuthContext from './contexts/index';
 import { ChatProvider } from './contexts/chatContext';
 import ru from "./locales/ru";
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { Provider, ErrorBoundary } from '@rollbar/react';
+import Rollbar from 'rollbar';
 
 const AuthProvider = ({ children }) => {
   const stateInit = localStorage.token;
@@ -44,6 +45,15 @@ const Access = ({ children }) => {
   return children;
 };
 
+const configRollbar = {
+  accessToken: process.env.TOKEN_ROLLBAR,
+  environment: process.env.ENVIRONMENT_ROLLBAR,
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+};
+
+const rollbar = new Rollbar(configRollbar);
+
 const App = ({ socket }) => {
   i18next
       .use(initReactI18next)
@@ -56,30 +66,32 @@ const App = ({ socket }) => {
 
   useEffect(() => {
     socket.on('connect_error', (e) => {
-      e;
+      rollbar.error(e);
     });
   }, [socket]);
 
   return (
-    <Provider>
-    <BrowserRouter>
-    <AuthProvider>
-      <Routes>
-        <Route
-        path={path.chat}
-        element={(
-          <Access>
-            <ChatProvider socket={socket}>
-            <ChatPage />
-            </ChatProvider>
-          </Access>
-        )} />
-        <Route path={path.login} element={<MainPage />} />
-        <Route path={path.chat} element={<ChatPage />} />
-        <Route path={path.signup} element={<SignUpPage />} />
-      </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+    <Provider config={configRollbar}>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
+              <Route
+                path={path.chat}
+                element={(
+                <Access>
+                  <ChatProvider socket={socket}>
+                    <ChatPage />
+                  </ChatProvider>
+                </Access>
+              )} />
+              <Route path={path.login} element={<MainPage />} />
+              <Route path={path.chat} element={<ChatPage />} />
+              <Route path={path.signup} element={<SignUpPage />} />
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
+      </ErrorBoundary>
     </Provider>
   );
 }

@@ -12,7 +12,7 @@ const validate = Yup.object().shape({
       .required('От 3 до 20 символов'),
   });
 
-const AddModal = ({ onChange }) => {
+const AddModal = ({ onChange, toastMessage }) => {
     const inputRef = useRef();
     const chatContext = useContext(ChatContext);
     const { sendNewChannel } = chatContext;
@@ -30,8 +30,13 @@ const AddModal = ({ onChange }) => {
           channelname: '',
         },
         onSubmit: (values) => {
+            try {
             sendNewChannel(values.channelname);
             onChange(true);
+            toastMessage(t('toast.channelAdd'), 'success');
+            } catch {
+                toastMessage(t('toast.error'), 'error');
+            }
       },
         validationSchema: validate,
         validateOnChange: false,
@@ -64,7 +69,7 @@ const AddModal = ({ onChange }) => {
                                 required
                                 ref={inputRef}
                             />
-                        <label class="visually-hidden" for="name">Имя канала</label>
+                        <label class="visually-hidden" for="name">{t('chatPage.channels.name')}</label>
                         {formik.errors.channelname && formik.touched.channelname && (
                         <div class="invalid-feedback">{formik.errors.channelname}</div>
                         )}
