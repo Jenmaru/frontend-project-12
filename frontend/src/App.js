@@ -45,14 +45,17 @@ const Access = ({ children }) => {
   return children;
 };
 
-const configRollbar = {
-  accessToken: process.env.TOKEN_ROLLBAR,
-  environment: process.env.ENVIRONMENT_ROLLBAR,
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-};
+const rollbarConfig = {
+  accessToken: 'd172c2454e5c4eaf85d11bb98210b492',
+  environment: 'testenv',
+}
 
-const rollbar = new Rollbar(configRollbar);
+function TestError() {
+  const a = null
+  return a.hello()
+}
+
+const rollbar = new Rollbar(rollbarConfig);
 
 const App = ({ socket }) => {
   i18next
@@ -71,7 +74,7 @@ const App = ({ socket }) => {
   }, [socket]);
 
   return (
-    <Provider config={configRollbar}>
+    <Provider config={rollbarConfig}>
       <ErrorBoundary>
         <BrowserRouter>
           <AuthProvider>
