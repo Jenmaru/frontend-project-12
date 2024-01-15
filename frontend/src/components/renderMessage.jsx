@@ -1,5 +1,6 @@
 import { useContext, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import LeoProfanity from 'leo-profanity';
 import { selectors } from '../reducers/Messages.js';
 import ChatContext from '../contexts/chatContext.jsx';
 
@@ -8,6 +9,9 @@ const RenderMessageComponent = () => {
   const { currentChannel } = chatContext;
   const messageRef = useRef();
   const messages = useSelector(selectors.selectAll);
+  const censor = LeoProfanity;
+  const ruCensor = censor.getDictionary('ru');
+  censor.add(ruCensor);
 
   const currentMessages = messages.filter((message) => message.channelId === currentChannel.id);
 
@@ -23,7 +27,7 @@ const RenderMessageComponent = () => {
         <div key={message.id} className="text-break mb-2">
           <b>{message.username}</b>
           :
-          {` ${message.body}`}
+          {` ${censor.clean(message.body)}`}
         </div>
       ))}
       <span ref={messageRef} />

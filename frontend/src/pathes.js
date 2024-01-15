@@ -1,6 +1,6 @@
 export default {
-    login: '/login',
-    chat: '/',
-    notFound: '*',
-    signup: '/signup',
-}
+  login: '/login',
+  chat: '/',
+  notFound: '*',
+  signup: '/signup',
+};
