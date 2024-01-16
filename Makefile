@@ -2,7 +2,7 @@ lint-frontend:
 	make -C frontend lint
 
 install:
-	make -C frontend install
+	npm ci
 
 start-frontend:
 	make -C frontend start
@@ -12,3 +12,6 @@ start-backend:
 
 start:
 	make start-backend & make start-frontend
+	
+build: 
+	npm run build --prefix frontend
