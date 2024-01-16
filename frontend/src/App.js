@@ -1,7 +1,7 @@
 import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { Provider, ErrorBoundary } from '@rollbar/react';
@@ -10,6 +10,7 @@ import path from './pathes';
 import SignUpPage from './pages/signUpPage.jsx';
 import ChatPage from './pages/chatPage.jsx';
 import MainPage from './pages/mainPage.jsx';
+import NotFoundPage from './pages/page404.jsx';
 import AuthContext from './contexts/index.jsx';
 import { ChatProvider } from './contexts/chatContext.jsx';
 import ru from './locales/ru';
@@ -18,28 +19,22 @@ const AuthProvider = ({ children }) => {
   const stateInit = localStorage.token;
   const [loggedIn, setLoggedIn] = useState(stateInit);
 
-  const loggedInMemo = useMemo(() => ({ loggedInMemo: loggedIn }), [loggedIn]);
+  const logIn = (token, username) => {
+    setLoggedIn(true);
+    localStorage.token = token;
+    localStorage.username = username;
+  };
 
-  const logIn = useMemo(() => ({
-    logIn: (token, username) => {
-      setLoggedIn(true);
-      localStorage.token = token;
-      localStorage.username = username;
-    },
-  }), []);
-
-  const logOut = useMemo(() => ({
-    logOut: () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-      setLoggedIn(false);
-      window.location = path.login;
-    },
-  }), []);
+  const logOut = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    setLoggedIn(false);
+    window.location = path.login;
+  };
 
   return (
     <AuthContext.Provider value={{
-      loggedInMemo, logIn, logOut,
+      loggedIn, logIn, logOut,
     }}
     >
       {children}
@@ -96,7 +91,7 @@ const App = ({ socket }) => {
               )}
               />
               <Route path={path.login} element={<MainPage />} />
-              <Route path={path.chat} element={<ChatPage />} />
+              <Route path={path.notFound} element={<NotFoundPage />} />
               <Route path={path.signup} element={<SignUpPage />} />
             </Routes>
           </AuthProvider>

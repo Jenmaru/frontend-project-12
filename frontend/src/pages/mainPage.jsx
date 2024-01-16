@@ -1,26 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Form, FloatingLabel } from 'react-bootstrap';
-import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import useAuth from '../hooks/index.jsx';
 import routes from '../hooks/routes.js';
 import Header from '../components/header.jsx';
 
-const loginSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(5, 'Минимум 5 букв')
-    .max(50, 'Максимум 50 букв')
-    .required('Обязательное поле'),
-  password: Yup.string()
-    .min(5, 'Минимум 8 буквы')
-    .max(50, 'Максимум 50 букв')
-    .required('Обязательное поле'),
-});
-
 const MainPage = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const location = useLocation();
@@ -37,6 +27,7 @@ const MainPage = () => {
       try {
         const response = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(response.data));
+        console.log(localStorage, values);
         auth.logIn(response.data.token, response.data.username);
         const { from } = location.state || { from: { pathname: '/' } };
         navigate(from);
@@ -50,7 +41,6 @@ const MainPage = () => {
         throw err;
       }
     },
-    validationSchema: loginSchema,
   });
 
   useEffect(() => {
@@ -123,7 +113,7 @@ const MainPage = () => {
                     <div className="text-center">
                       <span>Нет аккаунта?</span>
                       {' '}
-                      <a href="/signup">Регистрация</a>
+                      <a href="/signup">{t('signUp.title')}</a>
                     </div>
                   </div>
                 </div>
