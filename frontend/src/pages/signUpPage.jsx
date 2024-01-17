@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Form, FloatingLabel } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import axios from 'axios';
@@ -23,6 +24,7 @@ const loginSchema = Yup.object().shape({
 
 const SignUpPage = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const userNameRef = useRef();
   const passwordRef = useRef();
   const confirmRef = useRef();
@@ -73,7 +75,7 @@ const SignUpPage = () => {
                 </div>
                 <Form onSubmit={formik.handleSubmit} className="w-50">
                   <fieldset disabled={formik.isSubmitting}>
-                    <h1 className="text-center mb-4">Регистрация</h1>
+                    <h1 className="text-center mb-4">{t('signUp.title')}</h1>
                     <Form.Group className="form-floating mb-3">
                       <FloatingLabel
                         controlId="floatingInput"
@@ -87,7 +89,7 @@ const SignUpPage = () => {
                           id="username"
                           autoComplete="username"
                           required
-                          placeholder="Имя пользователя"
+                          placeholder={t('placeholder.username')}
                           ref={userNameRef}
                           className={formik.touched.username
                     && formik.errors.username ? 'is-invalid' : ''}
@@ -105,7 +107,7 @@ const SignUpPage = () => {
                           type="password"
                           onChange={formik.handleChange}
                           value={formik.values.password}
-                          placeholder="Пароль"
+                          placeholder={t('placeholder.password')}
                           name="password"
                           id="password"
                           autoComplete="current-password"
@@ -127,7 +129,7 @@ const SignUpPage = () => {
                           type="confirmpassword"
                           onChange={formik.handleChange}
                           value={formik.values.confirmpassword}
-                          placeholder="Подтвердите пароль"
+                          placeholder={t('placeholder.confirmPassword')}
                           name="confirmpassword"
                           id="confirmpassword"
                           autoComplete="current-password"
@@ -139,7 +141,7 @@ const SignUpPage = () => {
                         <div className="invalid-tooltip">{formik.errors.confirmpassword}</div>
                       </FloatingLabel>
                     </Form.Group>
-                    <Button type="submit" variant="outline-primary w-100">Зарегистрироваться</Button>
+                    <Button type="submit" variant="outline-primary w-100">{t('signUp.registration')}</Button>
                   </fieldset>
                 </Form>
               </div>
