@@ -84,7 +84,7 @@ const SignUpPage = () => {
                         id="username"
                         autoComplete="username"
                         required
-                        placeholder={t('placeholder.username')}
+                        placeholder="От 3 до 20 символов"
                         ref={userNameRef}
                         className={formik.touched.username
                     && formik.errors.username ? 'is-invalid' : ''}
@@ -97,7 +97,7 @@ const SignUpPage = () => {
                         type="password"
                         onChange={formik.handleChange}
                         value={formik.values.password}
-                        placeholder={t('placeholder.password')}
+                        placeholder="Не менее 6 символов"
                         name="password"
                         id="password"
                         autoComplete="current-password"
@@ -114,7 +114,7 @@ const SignUpPage = () => {
                         type="confirmpassword"
                         onChange={formik.handleChange}
                         value={formik.values.confirmpassword}
-                        placeholder={t('placeholder.confirmPassword')}
+                        placeholder="Пароли должны совпадать"
                         name="confirmpassword"
                         id="confirmpassword"
                         autoComplete="current-password"
