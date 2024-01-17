@@ -79,7 +79,6 @@ const SignUpPage = () => {
                     <Form.Group className="form-floating mb-3">
                       <FloatingLabel
                         controlId="floatingInput"
-                        label="Имя пользователя"
                         className="mb-3"
                       >
                         <Form.Control
