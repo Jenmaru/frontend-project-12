@@ -18,7 +18,6 @@ const loginSchema = Yup.object().shape({
     .required('Обязательное поле')
     .min(6, 'Не менее 6 символов'),
   confirmpassword: Yup.string()
-    .required('Обязательное поле')
     .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
 });
 
@@ -79,6 +78,7 @@ const SignUpPage = () => {
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value={formik.values.username}
                         name="username"
                         id="username"
@@ -86,16 +86,19 @@ const SignUpPage = () => {
                         required
                         placeholder="От 3 до 20 символов"
                         ref={userNameRef}
-                        className={formik.touched.username
-                    && formik.errors.username ? 'is-invalid' : ''}
+                        isInvalid={(formik.touched.username
+                    && formik.errors.username)}
                       />
+                      <Form.Control.Feedback type="invalid" tooltip>
+                        {formik.errors.username}
+                      </Form.Control.Feedback>
                       <Form.Label htmlFor="username">{t('placeholder.username')}</Form.Label>
-                      <div className="invalid-tooltip">{formik.errors.username}</div>
                     </Form.Group>
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
                         type="password"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value={formik.values.password}
                         placeholder="Не менее 6 символов"
                         name="password"
@@ -106,24 +109,25 @@ const SignUpPage = () => {
                         className={formik.touched.password
                     && formik.errors.password ? 'is-invalid' : ''}
                       />
-                      <Form.Label htmlFor="username">{t('placeholder.password')}</Form.Label>
+                      <Form.Label htmlFor="password">{t('placeholder.password')}</Form.Label>
                       <div className="invalid-tooltip">{formik.errors.password}</div>
                     </Form.Group>
                     <Form.Group className="form-floating mb-4">
                       <Form.Control
                         type="confirmpassword"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value={formik.values.confirmpassword}
                         placeholder="Пароли должны совпадать"
                         name="confirmpassword"
                         id="confirmpassword"
-                        autoComplete="current-password"
+                        autoComplete="new-password"
                         ref={confirmRef}
                         required
                         className={formik.touched.confirmpassword
                     && formik.errors.confirmpassword ? 'is-invalid' : ''}
                       />
-                      <Form.Label htmlFor="username">{t('placeholder.confirmPassword')}</Form.Label>
+                      <Form.Label htmlFor="confirmpassword">{t('placeholder.confirmPassword')}</Form.Label>
                       <div className="invalid-tooltip">{formik.errors.confirmpassword}</div>
                     </Form.Group>
                     <Button type="submit" variant="outline-primary w-100">{t('signUp.registration')}</Button>
