@@ -11,7 +11,7 @@ start-backend:
 	npx start-server
 
 start:
-	npx start-server & make -C frontend start
+	npx start-server -s ./frontend/build
 	
 build: 
 	make -C frontend build
