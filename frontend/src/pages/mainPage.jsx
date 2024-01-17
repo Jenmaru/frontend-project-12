@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Form, FloatingLabel } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import axios from 'axios';
@@ -60,56 +60,43 @@ const MainPage = () => {
                 </div>
                 <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
                   <fieldset disabled={formik.isSubmitting}>
-                    <h1 className="text-center mb-4">Войти</h1>
+                    <h1 className="text-center mb-4">{t('logIn.title')}</h1>
                     <Form.Group className="form-floating mb-3">
-                      <FloatingLabel
-                        controlId="floatingInput"
-                        label="Ваш ник"
-                        className="mb-3"
-                      >
-                        <Form.Control
-                          onChange={formik.handleChange}
-                          value={formik.values.username}
-                          name="username"
-                          id="username"
-                          autoComplete="username"
-                          isInvalid={authFailed}
-                          required
-                          placeholder="Ваш ник"
-                          ref={inputRef}
-                        />
-                      </FloatingLabel>
-                      {formik.errors.username && formik.touched.username && (
-                      <div className="text-danger">{formik.errors.username}</div>
-                      )}
+                      <Form.Control
+                        onChange={formik.handleChange}
+                        value={formik.values.username}
+                        name="username"
+                        id="username"
+                        autoComplete="username"
+                        isInvalid={authFailed}
+                        required
+                        placeholder={t('placeholder.login')}
+                        ref={inputRef}
+                      />
+                      <Form.Label htmlFor="username">{t('placeholder.login')}</Form.Label>
                     </Form.Group>
-                    <Form.Group className="form-floating mb-3">
-                      <FloatingLabel
-                        controlId="floatingInput"
-                        label="Пароль"
-                        className="mb-4"
-                      >
-                        <Form.Control
-                          type="password"
-                          onChange={formik.handleChange}
-                          value={formik.values.password}
-                          placeholder="Пароль"
-                          name="password"
-                          id="password"
-                          autoComplete="current-password"
-                          isInvalid={authFailed}
-                          required
-                        />
-                      </FloatingLabel>
-                      <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
+                    <Form.Group className="form-floating mb-4">
+                      <Form.Control
+                        type="password"
+                        onChange={formik.handleChange}
+                        value={formik.values.password}
+                        placeholder={t('placeholder.password')}
+                        name="password"
+                        id="password"
+                        autoComplete="current-password"
+                        isInvalid={authFailed}
+                        required
+                      />
+                      <Form.Label htmlFor="username">{t('placeholder.password')}</Form.Label>
+                      <Form.Control.Feedback type="invalid" tooltip>{authFailed ? t('logIn.errors.authorization') : null}</Form.Control.Feedback>
                     </Form.Group>
-                    <Button type="submit" variant="outline-primary w-100 mb-3">Войти</Button>
+                    <Button type="submit" variant="outline-primary w-100 mb-3">{t('logIn.title')}</Button>
                   </fieldset>
                 </Form>
               </div>
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span>Нет аккаунта?</span>
+                  <span>{t('logIn.newUser')}</span>
                   {' '}
                   <a href="/signup">{t('signUp.title')}</a>
                 </div>

@@ -6,7 +6,7 @@ export default {
     },
     logIn: {
       title: 'Войти',
-      newUser: 'Нет аккаунта',
+      newUser: 'Нет аккаунта?',
       errors: {
         authorization: 'Неверные имя пользователя или пароль',
         networkError: 'Ой, что-то пошло не так',
