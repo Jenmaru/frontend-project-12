@@ -71,9 +71,9 @@ const SignUpPage = () => {
                 <div className="card shadow-sm">
                   <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
                     <div>
-                      <img className="rounded-circle" alt="Регистрация" />
+                      <img className="rounded-circle" src="https://frontend-chat-ru.hexlet.app/static/media/avatar_1.6084447160acc893a24d.jpg" alt="Регистрация" />
                     </div>
-                    <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
+                    <Form onSubmit={formik.handleSubmit} className="w-50">
                       <fieldset disabled={formik.isSubmitting}>
                         <h1 className="text-center mb-4">Регистрация</h1>
                         <Form.Group className="form-floating mb-3">
@@ -94,10 +94,8 @@ const SignUpPage = () => {
                               className={formik.touched.username
                     && formik.errors.username ? 'is-invalid' : ''}
                             />
+                            <div className="invalid-tooltip">{formik.errors.username}</div>
                           </FloatingLabel>
-                          {formik.errors.username && formik.touched.username && (
-                          <div className="invalid-tooltip">{formik.errors.username}</div>
-                          )}
                         </Form.Group>
                         <Form.Group className="form-floating mb-3">
                           <FloatingLabel
@@ -118,16 +116,14 @@ const SignUpPage = () => {
                               className={formik.touched.password
                     && formik.errors.password ? 'is-invalid' : ''}
                             />
+                            <div className="invalid-tooltip">{formik.errors.password}</div>
                           </FloatingLabel>
-                          {formik.errors.password && formik.touched.password && (
-                          <div className="invalid-tooltip">{formik.errors.password}</div>
-                          )}
                         </Form.Group>
-                        <Form.Group className="form-floating mb-3">
+                        <Form.Group className="form-floating mb-4">
                           <FloatingLabel
                             controlId="floatingInput"
                             label="Подтвердите пароль"
-                            className="mb-3"
+                            className="mb-4"
                           >
                             <Form.Control
                               type="confirmpassword"
@@ -142,12 +138,10 @@ const SignUpPage = () => {
                               className={formik.touched.confirmpassword
                     && formik.errors.confirmpassword ? 'is-invalid' : ''}
                             />
+                            <div className="invalid-tooltip">{formik.errors.confirmpassword}</div>
                           </FloatingLabel>
-                          {formik.errors.confirmpassword && formik.touched.confirmpassword && (
-                          <div className="invalid-tooltip">{formik.errors.confirmpassword}</div>
-                          )}
                         </Form.Group>
-                        <Button type="submit" variant="outline-primary w-100 mb-3">Зарегистрироваться</Button>
+                        <Button type="submit" variant="outline-primary w-100">Зарегистрироваться</Button>
                       </fieldset>
                     </Form>
                   </div>
