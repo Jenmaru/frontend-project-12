@@ -4,20 +4,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import { io } from 'socket.io-client';
 import { Provider } from 'react-redux';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import store from './reducers/StoreReducer';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('chat'));
 
 const socket = io();
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App socket={socket} />
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <App socket={socket} />
+  </Provider>,
 );
 
 reportWebVitals();

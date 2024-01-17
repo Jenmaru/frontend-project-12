@@ -83,50 +83,46 @@ const ChatPage = () => {
 
   return (
     <>
-      <div className="h-100">
-        <div id="chat" className="h-100">
-          <div className="d-flex flex-column h-100">
-            <Header />
-            <div className="container h-100 my-4 overflow-hidden rounded shadow">
-              <div className="row h-100 bg-white flex-md-row">
-                <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-                  <ChannelsComponent onChange={handleChange} setId={setId} />
+      <div className="d-flex flex-column h-100">
+        <Header />
+        <div className="container h-100 my-4 overflow-hidden rounded shadow">
+          <div className="row h-100 bg-white flex-md-row">
+            <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+              <ChannelsComponent onChange={handleChange} setId={setId} />
+            </div>
+            <div className="col p-0 h-100">
+              <div className="d-flex flex-column h-100">
+                <div className="bg-light mb-4 p-3 shadow-sm small">
+                  <p className="m-0">
+                    <b>
+                      {`# ${currentChannel.name}`}
+                    </b>
+                  </p>
+                  <span className="text-muted">{t('chatPage.chat.message', { count: currentMessages.length })}</span>
                 </div>
-                <div className="col p-0 h-100">
-                  <div className="d-flex flex-column h-100">
-                    <div className="bg-light mb-4 p-3 shadow-sm small">
-                      <p className="m-0">
-                        <b>
-                          {`# ${currentChannel.name}`}
-                        </b>
-                      </p>
-                      <span className="text-muted">{t('chatPage.chat.message', { count: currentMessages.length })}</span>
-                    </div>
-                    <div id="messages-box" className="chat-messages overflow-auto px-5">
-                      <RenderMessageComponent />
-                    </div>
-                    <div className="mt-auto px-5 py-3">
-                      <MessagesComponent />
-                    </div>
-                  </div>
+                <div id="messages-box" className="chat-messages overflow-auto px-5">
+                  <RenderMessageComponent />
+                </div>
+                <div className="mt-auto px-5 py-3">
+                  <MessagesComponent />
                 </div>
               </div>
             </div>
           </div>
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {value === false ? setModal[modalType] : null}
     </>
   );

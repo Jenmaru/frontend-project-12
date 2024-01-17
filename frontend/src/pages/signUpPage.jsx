@@ -61,91 +61,87 @@ const SignUpPage = () => {
   }, []);
 
   return (
-    <div className="h-100">
-      <div id="chat" className="h-100">
-        <div className="d-flex flex-column h-100">
-          <Header />
-          <div className="container-fluid h-100">
-            <div className="row justify-content-center align-content-center h-100">
-              <div className="col-12 col-md-8 col-xxl-6">
-                <div className="card shadow-sm">
-                  <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-                    <div>
-                      <img className="rounded-circle" src="https://frontend-chat-ru.hexlet.app/static/media/avatar_1.6084447160acc893a24d.jpg" alt="Регистрация" />
-                    </div>
-                    <Form onSubmit={formik.handleSubmit} className="w-50">
-                      <fieldset disabled={formik.isSubmitting}>
-                        <h1 className="text-center mb-4">Регистрация</h1>
-                        <Form.Group className="form-floating mb-3">
-                          <FloatingLabel
-                            controlId="floatingInput"
-                            label="Имя пользователя"
-                            className="mb-3"
-                          >
-                            <Form.Control
-                              onChange={formik.handleChange}
-                              value={formik.values.username}
-                              name="username"
-                              id="username"
-                              autoComplete="username"
-                              required
-                              placeholder="Имя пользователя"
-                              ref={userNameRef}
-                              className={formik.touched.username
-                    && formik.errors.username ? 'is-invalid' : ''}
-                            />
-                            <div className="invalid-tooltip">{formik.errors.username}</div>
-                          </FloatingLabel>
-                        </Form.Group>
-                        <Form.Group className="form-floating mb-3">
-                          <FloatingLabel
-                            controlId="floatingInput"
-                            label="Пароль"
-                            className="mb-3"
-                          >
-                            <Form.Control
-                              type="password"
-                              onChange={formik.handleChange}
-                              value={formik.values.password}
-                              placeholder="Пароль"
-                              name="password"
-                              id="password"
-                              autoComplete="current-password"
-                              ref={passwordRef}
-                              required
-                              className={formik.touched.password
-                    && formik.errors.password ? 'is-invalid' : ''}
-                            />
-                            <div className="invalid-tooltip">{formik.errors.password}</div>
-                          </FloatingLabel>
-                        </Form.Group>
-                        <Form.Group className="form-floating mb-4">
-                          <FloatingLabel
-                            controlId="floatingInput"
-                            label="Подтвердите пароль"
-                            className="mb-4"
-                          >
-                            <Form.Control
-                              type="confirmpassword"
-                              onChange={formik.handleChange}
-                              value={formik.values.confirmpassword}
-                              placeholder="Подтвердите пароль"
-                              name="confirmpassword"
-                              id="confirmpassword"
-                              autoComplete="current-password"
-                              ref={confirmRef}
-                              required
-                              className={formik.touched.confirmpassword
-                    && formik.errors.confirmpassword ? 'is-invalid' : ''}
-                            />
-                            <div className="invalid-tooltip">{formik.errors.confirmpassword}</div>
-                          </FloatingLabel>
-                        </Form.Group>
-                        <Button type="submit" variant="outline-primary w-100">Зарегистрироваться</Button>
-                      </fieldset>
-                    </Form>
-                  </div>
+    <div className="d-flex flex-column h-100">
+      <Header />
+      <div className="container-fluid h-100">
+        <div className="row justify-content-center align-content-center h-100">
+          <div className="col-12 col-md-8 col-xxl-6">
+            <div className="card shadow-sm">
+              <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
+                <div>
+                  <img className="rounded-circle" src="https://frontend-chat-ru.hexlet.app/static/media/avatar_1.6084447160acc893a24d.jpg" alt="Регистрация" />
                 </div>
+                <Form onSubmit={formik.handleSubmit} className="w-50">
+                  <fieldset disabled={formik.isSubmitting}>
+                    <h1 className="text-center mb-4">Регистрация</h1>
+                    <Form.Group className="form-floating mb-3">
+                      <FloatingLabel
+                        controlId="floatingInput"
+                        label="Имя пользователя"
+                        className="mb-3"
+                      >
+                        <Form.Control
+                          onChange={formik.handleChange}
+                          value={formik.values.username}
+                          name="username"
+                          id="username"
+                          autoComplete="username"
+                          required
+                          placeholder="Имя пользователя"
+                          ref={userNameRef}
+                          className={formik.touched.username
+                    && formik.errors.username ? 'is-invalid' : ''}
+                        />
+                        <div className="invalid-tooltip">{formik.errors.username}</div>
+                      </FloatingLabel>
+                    </Form.Group>
+                    <Form.Group className="form-floating mb-3">
+                      <FloatingLabel
+                        controlId="floatingInput"
+                        label="Пароль"
+                        className="mb-3"
+                      >
+                        <Form.Control
+                          type="password"
+                          onChange={formik.handleChange}
+                          value={formik.values.password}
+                          placeholder="Пароль"
+                          name="password"
+                          id="password"
+                          autoComplete="current-password"
+                          ref={passwordRef}
+                          required
+                          className={formik.touched.password
+                    && formik.errors.password ? 'is-invalid' : ''}
+                        />
+                        <div className="invalid-tooltip">{formik.errors.password}</div>
+                      </FloatingLabel>
+                    </Form.Group>
+                    <Form.Group className="form-floating mb-4">
+                      <FloatingLabel
+                        controlId="floatingInput"
+                        label="Подтвердите пароль"
+                        className="mb-4"
+                      >
+                        <Form.Control
+                          type="confirmpassword"
+                          onChange={formik.handleChange}
+                          value={formik.values.confirmpassword}
+                          placeholder="Подтвердите пароль"
+                          name="confirmpassword"
+                          id="confirmpassword"
+                          autoComplete="current-password"
+                          ref={confirmRef}
+                          required
+                          className={formik.touched.confirmpassword
+                    && formik.errors.confirmpassword ? 'is-invalid' : ''}
+                        />
+                        <div className="invalid-tooltip">{formik.errors.confirmpassword}</div>
+                      </FloatingLabel>
+                    </Form.Group>
+                    <Button type="submit" variant="outline-primary w-100">Зарегистрироваться</Button>
+                  </fieldset>
+                </Form>
               </div>
             </div>
           </div>

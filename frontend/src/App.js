@@ -76,9 +76,9 @@ const App = ({ socket }) => {
 
   return (
     <Provider config={rollbarConfig}>
-      <BrowserRouter>
-        <ErrorBoundary>
-          <AuthProvider>
+      <ErrorBoundary>
+        <AuthProvider>
+          <BrowserRouter>
             <Routes>
               <Route
                 path={path.chat}
@@ -94,9 +94,9 @@ const App = ({ socket }) => {
               <Route path={path.notFound} element={<NotFoundPage />} />
               <Route path={path.signup} element={<SignUpPage />} />
             </Routes>
-          </AuthProvider>
-        </ErrorBoundary>
-      </BrowserRouter>
+          </BrowserRouter>
+        </AuthProvider>
+      </ErrorBoundary>
     </Provider>
   );
 };
