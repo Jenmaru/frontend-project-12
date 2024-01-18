@@ -56,6 +56,7 @@ const ChannelItem = (props) => {
                 href="#"
                 onClick={() => {
                   setId(channel);
+                  setCurrentChannel(channel);
                   onChange(false, 'removeChannel');
                 }}
                 id={channel.id}
@@ -84,6 +85,8 @@ const ChannelsComponent = ({ onChange, setId }) => {
   const chatContext = useContext(ChatContext);
   const { currentChannel, setCurrentChannel } = chatContext;
   const { t } = useTranslation();
+
+  console.log(currentChannel);
 
   return (
     <>
