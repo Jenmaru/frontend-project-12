@@ -29,7 +29,7 @@ const ChatProvider = ({ socket, children }) => {
     setCurrentChannel(channels[0]);
   });
 
-  const removeChannel = (id) => socket.emit('removeChannel', { id }, () => {
+  const removeChannel = (id) => socket.timeout(5000).emit('removeChannel', { id }, () => {
     setCurrentChannel(channels[0]);
   });
 
