@@ -49,7 +49,7 @@ const ChannelItem = (props) => {
               variant={channel.id === currentChannel.id && 'secondary'}
               id={`dropdown-split-basic-${channel.id}`}
             >
-              <span className="visually-hidden">{t('chatPage.chat.control')}</span>
+              <span className="visually-hidden">{t('chatPage.channels.control')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item

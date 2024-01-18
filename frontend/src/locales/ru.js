@@ -31,13 +31,13 @@ export default {
         title: 'Каналы',
         rename: 'Переименовать',
         remove: 'Удалить',
+        control: 'Управление каналом',
       },
       chat: {
         message_one: '{{count}} сообщение',
         message_few: '{{count}} сообщения',
         message_many: '{{count}} сообщений',
         send: 'Отправить',
-        control: 'Управление каналом',
       },
     },
     modal: {

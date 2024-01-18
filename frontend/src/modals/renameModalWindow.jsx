@@ -33,7 +33,7 @@ const RenameModal = ({ onChange, channel, toast }) => {
 
   const formik = useFormik({
     initialValues: {
-      channelname: channel.name,
+      channelname: '',
     },
     onSubmit: (values) => {
       try {
