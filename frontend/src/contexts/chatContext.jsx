@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions as messagesActions } from '../reducers/Messages.js';
 import { actions as channelsActions, selectors } from '../reducers/Channels.js';
@@ -40,20 +40,21 @@ const ChatProvider = ({ socket, children }) => {
 
   const renameChannel = (id, name) => socket.emit('renameChannel', { id, name });
 
+  const value = useMemo(() => ({
+    sendNewMessage,
+    sendNewChannel,
+    removeChannel,
+    renameChannel,
+    subscribeRemoveChannel,
+    subscribeRenameChannel,
+    getNewMessage,
+    getNewChannel,
+    currentChannel,
+    setCurrentChannel,
+  }), [currentChannel, setCurrentChannel]);
+
   return (
-    <ChatContext.Provider value={{
-      getNewMessage,
-      sendNewMessage,
-      getNewChannel,
-      currentChannel,
-      setCurrentChannel,
-      sendNewChannel,
-      removeChannel,
-      subscribeRemoveChannel,
-      renameChannel,
-      subscribeRenameChannel,
-    }}
-    >
+    <ChatContext.Provider value={value}>
       {children}
     </ChatContext.Provider>
   );

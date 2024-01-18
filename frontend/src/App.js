@@ -1,7 +1,7 @@
 import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { Provider, ErrorBoundary } from '@rollbar/react';
@@ -32,11 +32,14 @@ const AuthProvider = ({ children }) => {
     window.location = path.login;
   };
 
+  const value = useMemo(() => ({
+    loggedIn,
+    logIn,
+    logOut,
+  }), [loggedIn]);
+
   return (
-    <AuthContext.Provider value={{
-      loggedIn, logIn, logOut,
-    }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
