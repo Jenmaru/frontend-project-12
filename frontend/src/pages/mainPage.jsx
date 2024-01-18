@@ -85,8 +85,8 @@ const MainPage = () => {
                         isInvalid={authFailed}
                         required
                       />
-                      <Form.Label htmlFor="username">{t('placeholder.password')}</Form.Label>
-                      <Form.Control.Feedback type="invalid" tooltip>{authFailed ? t('logIn.errors.authorization') : null}</Form.Control.Feedback>
+                      <Form.Label htmlFor="password">{t('placeholder.password')}</Form.Label>
+                      <div className="invalid-tooltip">{authFailed ? t('logIn.errors.authorization') : null}</div>
                     </Form.Group>
                     <Button type="submit" variant="outline-primary w-100 mb-3">{t('logIn.title')}</Button>
                   </fieldset>
