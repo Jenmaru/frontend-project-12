@@ -64,7 +64,6 @@ const MainPage = () => {
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
                         onChange={formik.handleChange}
-                        value={formik.values.username}
                         name="username"
                         id="username"
                         autoComplete="username"
@@ -77,10 +76,9 @@ const MainPage = () => {
                     </Form.Group>
                     <Form.Group className="form-floating mb-4">
                       <Form.Control
-                        type="password"
                         onChange={formik.handleChange}
-                        value={formik.values.password}
                         placeholder={t('placeholder.password')}
+                        type="password"
                         name="password"
                         id="password"
                         autoComplete="current-password"
