@@ -33,7 +33,7 @@ const RenameModal = ({ onChange, channel, toast }) => {
 
   const formik = useFormik({
     initialValues: {
-      channelname: '',
+      channelname: channel.name,
     },
     onSubmit: (values) => {
       try {
@@ -44,9 +44,15 @@ const RenameModal = ({ onChange, channel, toast }) => {
         toast(t('toast.error'), 'error');
       }
     },
-    validationSchema: validate(channelsName),
+
     validateOnChange: false,
+    validateOnBlur: false,
+    validationSchema: validate(channelsName),
   });
+
+  useEffect(() => {
+    inputRef.current.select();
+  }, []);
 
   return (
     <>
@@ -67,15 +73,16 @@ const RenameModal = ({ onChange, channel, toast }) => {
                     <Form.Control
                       className="mb-2"
                       onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       value={formik.values.channelname}
                       name="channelname"
                       id="channelname"
-                      autoComplete="channelname"
+                      autoComplete="off"
                       isInvalid={formik.errors.channelname && formik.touched.channelname}
                       required
                       ref={inputRef}
                     />
-                    <label className="visually-hidden" htmlFor="name">{t('channels.name')}</label>
+                    <label className="visually-hidden" htmlFor="channelname">{t('channels.name')}</label>
                     {formik.errors.channelname && formik.touched.channelname && (
                     <div className="invalid-feedback">{formik.errors.channelname}</div>
                     )}
