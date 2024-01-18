@@ -3,9 +3,11 @@ import React, {
 } from 'react';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
+import { useTranslation } from 'react-i18next';
 import ChatContext from '../contexts/chatContext';
 
 const MessagesComponent = () => {
+  const { t } = useTranslation();
   const [text, setText] = useState('');
   const chatContext = useContext(ChatContext);
   const ref = useRef();
@@ -40,7 +42,7 @@ const MessagesComponent = () => {
           placeholder="Введите сообщение..."
           value={text}
           onChange={(e) => setText(e.target.value)}
-          aria-label="Новое сообщение..."
+          aria-label="Новое сообщение"
           className="border-0 p-0 ps-2"
           noValidate=""
           ref={ref}
@@ -48,7 +50,7 @@ const MessagesComponent = () => {
         <Button variant="group-vertical btn-light" type="submit" disabled={text === ''}>
           <ArrowRightSquare width="20" height="20" />
           <span className="visually-hidden">
-            Отправить
+            {t('chat.send')}
           </span>
         </Button>
       </InputGroup>
