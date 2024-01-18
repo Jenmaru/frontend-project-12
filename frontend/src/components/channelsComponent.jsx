@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
-import { PlusSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
+import { PlusSquare } from 'react-bootstrap-icons';
 import cn from 'classnames';
 import ChatContext from '../contexts/chatContext.jsx';
 import { selectors } from '../reducers/Channels';
@@ -49,7 +49,7 @@ const ChannelItem = (props) => {
               variant={channel.id === currentChannel.id && 'secondary'}
               id={`dropdown-split-basic-${channel.id}`}
             >
-              <span className="visually-hidden">channels.control</span>
+              <span className="visually-hidden">{t('chatPage.chat.control')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item

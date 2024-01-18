@@ -37,6 +37,7 @@ export default {
         message_few: '{{count}} сообщения',
         message_many: '{{count}} сообщений',
         send: 'Отправить',
+        control: 'Управление каналом',
       },
     },
     modal: {

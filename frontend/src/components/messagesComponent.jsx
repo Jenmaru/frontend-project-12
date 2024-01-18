@@ -50,7 +50,7 @@ const MessagesComponent = () => {
         <Button variant="group-vertical btn-light" type="submit" disabled={text === ''}>
           <ArrowRightSquare width="20" height="20" />
           <span className="visually-hidden">
-            {t('chat.send')}
+            {t('charPage.chat.send')}
           </span>
         </Button>
       </InputGroup>
