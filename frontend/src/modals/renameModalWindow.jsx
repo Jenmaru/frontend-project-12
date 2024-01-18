@@ -33,7 +33,7 @@ const RenameModal = ({ onChange, channel, toast }) => {
 
   const formik = useFormik({
     initialValues: {
-      channelname: '',
+      channelname: channel.name,
     },
     onSubmit: (values) => {
       try {
@@ -82,7 +82,7 @@ const RenameModal = ({ onChange, channel, toast }) => {
                       required
                       ref={inputRef}
                     />
-                    <label className="visually-hidden" htmlFor="channelname">{t('channels.name')}</label>
+                    <label className="visually-hidden" htmlFor="channelname">{t('chatPage.channels.name')}</label>
                     {formik.errors.channelname && formik.touched.channelname && (
                     <div className="invalid-feedback">{formik.errors.channelname}</div>
                     )}
