@@ -61,7 +61,7 @@ export default {
       error: 'Ошибка',
       networkError: 'Ошибка соединения',
       channelAdd: 'Канал создан',
-      channelRemove: 'Канал удален',
+      channelRemove: 'Канал удалён',
       channelRename: 'Канал переименован',
     },
   },
