@@ -1,4 +1,6 @@
-import { createContext, useState, useMemo } from 'react';
+import {
+  createContext, useState, useMemo, useEffect,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions as messagesActions } from '../reducers/Messages.js';
 import { actions as channelsActions, selectors } from '../reducers/Channels.js';
@@ -10,32 +12,35 @@ const ChatProvider = ({ socket, children }) => {
 
   const [currentChannel, setCurrentChannel] = useState({ id: 1, name: 'general' });
   const channels = useSelector(selectors.selectAll);
-  const getNewMessage = () => socket.on('newMessage', (message) => {
-    dispatch(messagesActions.addMessage(message));
+
+  useEffect(() => {
+    socket.on('newMessage', (message) => {
+      dispatch(messagesActions.addMessage(message));
+    });
+
+    socket.on('newChannel', (channel) => {
+      dispatch(channelsActions.addChannel(channel));
+    });
+
+    socket.on('removeChannel', (payload) => {
+      dispatch(channelsActions.removeChannel(payload.id));
+      setCurrentChannel(channels[0]);
+    });
+
+    socket.on('renameChannel', (payload) => {
+      dispatch(channelsActions.renameChannel({ id: payload.id, changes: payload }));
+      setCurrentChannel(payload);
+    });
   });
 
   const sendNewMessage = (message) => socket.emit('newMessage', message);
-
-  const getNewChannel = () => socket.on('newChannel', (channel) => {
-    dispatch(channelsActions.addChannel(channel));
-  });
 
   const sendNewChannel = (name) => socket.emit('newChannel', { name }, (response) => {
     setCurrentChannel(response.data);
   });
 
-  const subscribeRemoveChannel = () => socket.on('removeChannel', (payload) => {
-    dispatch(channelsActions.removeChannel(payload.id));
-    setCurrentChannel(channels[0]);
-  });
-
   const removeChannel = (id) => socket.timeout(5000).emit('removeChannel', { id }, () => {
     setCurrentChannel(channels[0]);
-  });
-
-  const subscribeRenameChannel = () => socket.on('renameChannel', (payload) => {
-    dispatch(channelsActions.renameChannel({ id: payload.id, changes: payload }));
-    setCurrentChannel(payload);
   });
 
   const renameChannel = (id, name) => socket.emit('renameChannel', { id, name });
@@ -45,10 +50,6 @@ const ChatProvider = ({ socket, children }) => {
     sendNewChannel,
     removeChannel,
     renameChannel,
-    subscribeRemoveChannel,
-    subscribeRenameChannel,
-    getNewMessage,
-    getNewChannel,
     currentChannel,
     setCurrentChannel,
   }), [currentChannel, setCurrentChannel]);

@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import useAuth from '../hooks/index.jsx';
+import { useAuth } from '../contexts/authProvider.jsx';
 import routes from '../hooks/routes.js';
 import Header from '../components/header.jsx';
 
@@ -23,12 +23,9 @@ const MainPage = () => {
     },
     onSubmit: async (values) => {
       setAuthFailed(false);
-
       try {
         const response = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(response.data));
-        console.log(localStorage, values);
-        auth.logIn(response.data.token, response.data.username);
+        auth.logIn(response.data);
         const { from } = location.state || { from: { pathname: '/' } };
         navigate(from);
       } catch (err) {

@@ -4,6 +4,7 @@ import React, {
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../contexts/authProvider.jsx';
 import ChatContext from '../contexts/chatContext';
 
 const MessagesComponent = () => {
@@ -12,12 +13,13 @@ const MessagesComponent = () => {
   const chatContext = useContext(ChatContext);
   const ref = useRef();
   const { sendNewMessage, currentChannel } = chatContext;
+  const auth = useAuth();
 
   const sendMessage = () => {
     const message = {
       body: text,
       channelId: currentChannel.id,
-      username: localStorage.username,
+      username: auth.user.username,
     };
     sendNewMessage(message);
     setText('');

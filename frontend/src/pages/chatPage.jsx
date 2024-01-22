@@ -14,7 +14,7 @@ import RenderMessageComponent from '../components/renderMessage.jsx';
 import AddModal from '../modals/addModalWindow.jsx';
 import RenameModal from '../modals/renameModalWindow.jsx';
 import RemoveModal from '../modals/removeModalWindow.jsx';
-import useAuth from '../hooks/index.jsx';
+import { useAuth } from '../contexts/authProvider.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ChatPage = () => {
@@ -24,10 +24,6 @@ const ChatPage = () => {
   const messagesMass = useSelector(selectors.selectAll);
   const chatContext = useContext(ChatContext);
   const {
-    getNewChannel,
-    getNewMessage,
-    subscribeRemoveChannel,
-    subscribeRenameChannel,
     currentChannel,
   } = chatContext;
   const [value, setValue] = useState(true);
@@ -59,12 +55,9 @@ const ChatPage = () => {
 
   useEffect(() => {
     const getResponse = async () => {
-      const token = `Bearer ${localStorage.getItem('token')}`;
       try {
         const { data } = await axios.get(routes.usersPath(), {
-          headers: {
-            Authorization: token,
-          },
+          headers: auth.getAuth(),
         });
         const { channels, messages } = data;
         dispatch(channelsAction.addChannels(channels));
@@ -75,10 +68,6 @@ const ChatPage = () => {
       }
     };
     getResponse();
-    getNewMessage();
-    getNewChannel();
-    subscribeRemoveChannel();
-    subscribeRenameChannel();
   });
 
   return (

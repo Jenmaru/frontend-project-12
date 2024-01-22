@@ -1,52 +1,23 @@
 import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect } from 'react';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import Rollbar from 'rollbar';
-import path from './pathes';
+import path from './routes.js';
 import SignUpPage from './pages/signUpPage.jsx';
 import ChatPage from './pages/chatPage.jsx';
 import MainPage from './pages/mainPage.jsx';
 import NotFoundPage from './pages/page404.jsx';
-import AuthContext from './contexts/index.jsx';
 import { ChatProvider } from './contexts/chatContext.jsx';
+import AuthProvider, { useAuth } from './contexts/authProvider.jsx';
 import ru from './locales/ru';
 
-const AuthProvider = ({ children }) => {
-  const stateInit = localStorage.token;
-  const [loggedIn, setLoggedIn] = useState(stateInit);
-
-  const logIn = (token, username) => {
-    setLoggedIn(true);
-    localStorage.token = token;
-    localStorage.username = username;
-  };
-
-  const logOut = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    setLoggedIn(false);
-    window.location = path.login;
-  };
-
-  const value = useMemo(() => ({
-    loggedIn,
-    logIn,
-    logOut,
-  }), [loggedIn]);
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
 const Access = ({ children }) => {
-  if (!localStorage.token) {
+  const auth = useAuth();
+  if (auth.user === null) {
     return <Navigate to={path.login} />;
   }
   return children;

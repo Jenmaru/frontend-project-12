@@ -1,12 +1,12 @@
 import React, { useRef, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import useAuth from '../hooks/index.jsx';
-import routes from '../hooks/routes.js';
+import { useAuth } from '../contexts/authProvider.jsx';
+import routes from '../routes.js';
 import Header from '../components/header.jsx';
 
 const loginSchema = Yup.object().shape({
@@ -27,7 +27,6 @@ const SignUpPage = () => {
   const userNameRef = useRef();
   const passwordRef = useRef();
   const confirmRef = useRef();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -37,13 +36,10 @@ const SignUpPage = () => {
       confirmpassword: '',
     },
     onSubmit: async (values) => {
-      const { username, password } = values;
-
       try {
-        const response = await axios.post(routes.createUserPath(), { username, password });
-        auth.logIn(response.data.token, response.data.username);
-        const { from } = location.state || { from: { pathname: '/' } };
-        navigate(from);
+        const response = await axios.post(routes.createUserPath(), values);
+        auth.logIn(response.data);
+        navigate(routes.chat);
       } catch (err) {
         formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 401) {
