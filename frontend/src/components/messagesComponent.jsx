@@ -15,13 +15,13 @@ const MessagesComponent = () => {
   const { sendNewMessage, currentChannel } = chatContext;
   const auth = useAuth();
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const message = {
       body: text,
       channelId: currentChannel.id,
       username: auth.user.username,
     };
-    sendNewMessage(message);
+    await sendNewMessage(message);
     setText('');
   };
 

@@ -6,7 +6,7 @@ import { Button, Form } from 'react-bootstrap';
 import LeoProfanity from 'leo-profanity';
 import { useSelector } from 'react-redux';
 import ChatContext from '../contexts/chatContext';
-import { selectors } from '../reducers/Channels';
+import { selectors } from '../slices/Channels';
 
 const validate = (channelsName) => Yup.object().shape({
   channelname: Yup.string()
@@ -19,19 +19,18 @@ const validate = (channelsName) => Yup.object().shape({
 const AddModal = ({ onChange, toast }) => {
   const inputRef = useRef();
   const chatContext = useContext(ChatContext);
-  const { sendNewChannel } = chatContext;
+  const { createChannel } = chatContext;
   const { t } = useTranslation();
   const handleClick = () => {
     onChange(true);
   };
-  const censor = LeoProfanity;
-  const reCensor = censor.getDictionary('ru');
-  censor.add(reCensor);
 
   const channels = useSelector(selectors.selectAll);
   const channelsName = channels.map((channel) => channel.name);
 
   useEffect(() => {
+    const reCensor = LeoProfanity.getDictionary('ru');
+    LeoProfanity.add(reCensor);
     inputRef.current.focus();
   }, []);
 
@@ -39,9 +38,9 @@ const AddModal = ({ onChange, toast }) => {
     initialValues: {
       channelname: '',
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
-        sendNewChannel(censor.clean(values.channelname));
+        await createChannel(LeoProfanity.clean(values.channelname));
         onChange(true);
         toast(t('toast.channelAdd'), 'success');
       } catch {

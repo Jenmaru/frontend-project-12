@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import ChatContext from '../contexts/chatContext';
-import { selectors } from '../reducers/Channels';
+import { selectors } from '../slices/Channels';
 
 const validate = (channelsName) => Yup.object().shape({
   channelname: Yup.string()
@@ -35,9 +35,9 @@ const RenameModal = ({ onChange, channel, toast }) => {
     initialValues: {
       channelname: channel.name,
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
-        renameChannel(channel.id, values.channelname);
+        await renameChannel(channel.id, values.channelname);
         onChange(true);
         toast(t('toast.channelRename'), 'success');
       } catch {

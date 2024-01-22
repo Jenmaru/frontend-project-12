@@ -1,12 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
-import { actions as channelsAction } from '../reducers/Channels.js';
-import { actions as messagesAction, selectors } from '../reducers/Messages.js';
-import routes from '../hooks/routes';
-import ChatContext from '../contexts/chatContext.jsx';
+import { actions as channelsAction } from '../slices/Channels.js';
+import { actions as messagesAction, selectors } from '../slices/Messages.js';
+import routes from '../routes.js';
 import Header from '../components/header.jsx';
 import ChannelsComponent from '../components/channelsComponent.jsx';
 import MessagesComponent from '../components/messagesComponent.jsx';
@@ -22,10 +21,7 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const messagesMass = useSelector(selectors.selectAll);
-  const chatContext = useContext(ChatContext);
-  const {
-    currentChannel,
-  } = chatContext;
+  const currentChannel = { id: 1, name: 'general' };
   const [value, setValue] = useState(true);
   const [modalType, setModalType] = useState('');
   const [channelId, setChannelId] = useState('');

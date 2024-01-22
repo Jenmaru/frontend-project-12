@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { useAuth } from '../contexts/authProvider.jsx';
-import routes from '../hooks/routes.js';
+import routes from '../routes.js';
 import Header from '../components/header.jsx';
 
 const MainPage = () => {

@@ -2,8 +2,6 @@ import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
 import { useEffect } from 'react';
-import i18next from 'i18next';
-import { initReactI18next } from 'react-i18next';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import Rollbar from 'rollbar';
 import path from './routes.js';
@@ -13,7 +11,6 @@ import MainPage from './pages/mainPage.jsx';
 import NotFoundPage from './pages/page404.jsx';
 import { ChatProvider } from './contexts/chatContext.jsx';
 import AuthProvider, { useAuth } from './contexts/authProvider.jsx';
-import ru from './locales/ru';
 
 const Access = ({ children }) => {
   const auth = useAuth();
@@ -33,15 +30,6 @@ const rollbarConfig = {
 const rollbar = new Rollbar(rollbarConfig);
 
 const App = ({ socket }) => {
-  i18next
-    .use(initReactI18next)
-    .init({
-      lng: 'ru',
-      resources: {
-        ru,
-      },
-    });
-
   useEffect(() => {
     socket.on('connect_error', (e) => {
       rollbar.error(e);

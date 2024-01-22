@@ -11,9 +11,9 @@ const RemoveModal = ({ onChange, channel, toast }) => {
     onChange(true);
   };
 
-  const remove = () => {
+  const remove = async () => {
     try {
-      removeChannel(channel.id);
+      await removeChannel(channel.id);
       onChange(true);
       toast(t('toast.channelRemove'), 'success');
     } catch {
