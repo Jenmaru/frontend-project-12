@@ -1,17 +1,14 @@
 import {
-  createContext, useState, useMemo, useEffect,
+  createContext, useMemo, useEffect,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { actions as messagesActions } from '../slices/Messages.js';
-import { actions as channelsActions, selectors } from '../slices/Channels.js';
+import { actions as channelsActions, getCurrentChannel } from '../slices/Channels.js';
 
 const ChatContext = createContext({});
 
 const ChatProvider = ({ socket, children }) => {
   const dispatch = useDispatch();
-
-  const [currentChannel, setCurrentChannel] = useState({ id: 1, name: 'general' });
-  const channels = useSelector(selectors.selectAll);
 
   useEffect(() => {
     socket.on('newMessage', (message) => {
@@ -24,12 +21,10 @@ const ChatProvider = ({ socket, children }) => {
 
     socket.on('removeChannel', (payload) => {
       dispatch(channelsActions.removeChannel(payload.id));
-      setCurrentChannel(channels[0]);
     });
 
     socket.on('renameChannel', (payload) => {
       dispatch(channelsActions.renameChannel({ id: payload.id, changes: payload }));
-      setCurrentChannel(payload);
     });
   });
 
@@ -49,7 +44,6 @@ const ChatProvider = ({ socket, children }) => {
     await new Promise((resolve, reject) => {
       socket.timeout(5000).emit('newChannel', { name }, (err, response) => {
         if (response?.status === 'ok') {
-          setCurrentChannel(response.data);
           resolve(response);
         } else {
           reject(err);
@@ -62,7 +56,6 @@ const ChatProvider = ({ socket, children }) => {
     await new Promise((resolve, reject) => {
       socket.timeout(5000).emit('removeChannel', { id }, (err, response) => {
         if (response?.status === 'ok') {
-          setCurrentChannel(channels[0]);
           resolve(response);
         } else {
           reject(err);
@@ -88,9 +81,8 @@ const ChatProvider = ({ socket, children }) => {
     createChannel,
     removeChannel,
     renameChannel,
-    currentChannel,
-    setCurrentChannel,
-  }), [currentChannel, setCurrentChannel]);
+    getCurrentChannel,
+  }), []);
 
   return (
     <ChatContext.Provider value={value}>

@@ -1,9 +1,6 @@
 import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
-import { useEffect } from 'react';
-import { Provider, ErrorBoundary } from '@rollbar/react';
-import Rollbar from 'rollbar';
 import path from './routes.js';
 import SignUpPage from './pages/signUpPage.jsx';
 import ChatPage from './pages/chatPage.jsx';
@@ -11,6 +8,7 @@ import MainPage from './pages/mainPage.jsx';
 import NotFoundPage from './pages/page404.jsx';
 import { ChatProvider } from './contexts/chatContext.jsx';
 import AuthProvider, { useAuth } from './contexts/authProvider.jsx';
+import { getCurrentChannel } from './slices/Channels.js';
 
 const Access = ({ children }) => {
   const auth = useAuth();
@@ -20,47 +18,26 @@ const Access = ({ children }) => {
   return children;
 };
 
-const rollbarConfig = {
-  accessToken: process.env.TOKEN_ROLLBAR,
-  environment: process.env.ENVIRONMENT_ROLLBAR,
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-};
-
-const rollbar = new Rollbar(rollbarConfig);
-
-const App = ({ socket }) => {
-  useEffect(() => {
-    socket.on('connect_error', (e) => {
-      rollbar.error(e);
-    });
-  }, [socket]);
-
-  return (
-    <Provider config={rollbarConfig}>
-      <ErrorBoundary>
-        <AuthProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route
-                path={path.chat}
-                element={(
-                  <Access>
-                    <ChatProvider socket={socket}>
-                      <ChatPage />
-                    </ChatProvider>
-                  </Access>
+const App = ({ socket }) => (
+  <AuthProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path={path.chat}
+          element={(
+            <ChatProvider socket={socket}>
+              <Access>
+                <ChatPage getMainChannel={getCurrentChannel} />
+              </Access>
+            </ChatProvider>
               )}
-              />
-              <Route path={path.login} element={<MainPage />} />
-              <Route path={path.notFound} element={<NotFoundPage />} />
-              <Route path={path.signup} element={<SignUpPage />} />
-            </Routes>
-          </BrowserRouter>
-        </AuthProvider>
-      </ErrorBoundary>
-    </Provider>
-  );
-};
+        />
+        <Route path={path.login} element={<MainPage />} />
+        <Route path={path.notFound} element={<NotFoundPage />} />
+        <Route path={path.signup} element={<SignUpPage />} />
+      </Routes>
+    </BrowserRouter>
+  </AuthProvider>
+);
 
 export default App;

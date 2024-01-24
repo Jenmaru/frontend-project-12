@@ -6,7 +6,7 @@ import { Button, Form } from 'react-bootstrap';
 import LeoProfanity from 'leo-profanity';
 import { useSelector, useDispatch } from 'react-redux';
 import ChatContext from '../contexts/chatContext';
-import { selectors, actions } from '../slices/Channels';
+import { selectors, actions, getCurrentChannel } from '../slices/Channels';
 
 const validate = (channelsName) => Yup.object().shape({
   channelName: Yup.string()
@@ -87,7 +87,7 @@ const AddModal = ({ onChange, toast }) => {
 
                     <div className="d-flex justify-content-end">
                       <Button onClick={handleClick} type="button" variant="secondary me-2" disabled={formik.isSubmitting}>{t('modal.cancel')}</Button>
-                      <Button type="submit" value="submit" variant="primary" disabled={formik.isSubmitting}>{t('modal.send')}</Button>
+                      <Button onClick={useSelector(getCurrentChannel)} type="submit" value="submit" variant="primary" disabled={formik.isSubmitting}>{t('modal.send')}</Button>
                     </div>
                   </div>
                 </fieldset>

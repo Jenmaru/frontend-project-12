@@ -5,6 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { PlusSquare } from 'react-bootstrap-icons';
 import cn from 'classnames';
 import { selectors, actions, getCurrentChannel } from '../slices/Channels';
+import { selectors as messagesSelect } from '../slices/Messages.js';
+import MessagesComponent from './messagesComponent.jsx';
+import RenderMessageComponent from './renderMessage.jsx';
 
 const ChannelItem = ({
   handleChannel,
@@ -85,29 +88,47 @@ const ChannelsComponent = ({ onChange, setId }) => {
   const handleChannel = (id) => {
     dispatch(actions.setChannelId(id));
   };
+  const messagesMass = useSelector(messagesSelect.selectAll);
+  const currentMessages = messagesMass.filter((message) => message.channelId === currentChannel.id);
 
   return (
     <>
-      <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-        <b>{t('chatPage.channels.title')}</b>
-        <button onClick={() => onChange(false, 'addChannel')} type="button" className="p-0 text-primary btn btn-group-vertical">
-          <PlusSquare height="20" width="20" />
-          <span className="visually-hidden">+</span>
-        </button>
+      <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+        <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
+          <b>{t('chatPage.channels.title')}</b>
+          <button onClick={() => onChange(false, 'addChannel')} type="button" className="p-0 text-primary btn btn-group-vertical">
+            <PlusSquare height="20" width="20" />
+            <span className="visually-hidden">+</span>
+          </button>
+        </div>
+        <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
+          {channels.map((channel) => (
+            <ChannelItem
+              handleChannel={handleChannel}
+              key={channel.id}
+              channel={channel}
+              currentChannel={currentChannel}
+              onChange={onChange}
+              setId={setId}
+              t={t}
+            />
+          ))}
+        </ul>
       </div>
-      <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-        {channels.map((channel) => (
-          <ChannelItem
-            handleChannel={handleChannel}
-            key={channel.id}
-            channel={channel}
-            currentChannel={currentChannel}
-            onChange={onChange}
-            setId={setId}
-            t={t}
-          />
-        ))}
-      </ul>
+      <div className="col p-0 h-100">
+        <div className="d-flex flex-column h-100">
+          <div className="bg-light mb-4 p-3 shadow-sm small">
+            <p className="m-0">
+              <b>
+                {`# ${currentChannel.name}`}
+              </b>
+            </p>
+            <span className="text-muted">{t('chatPage.chat.message', { count: currentMessages.length })}</span>
+          </div>
+          <RenderMessageComponent />
+          <MessagesComponent />
+        </div>
+      </div>
     </>
   );
 };

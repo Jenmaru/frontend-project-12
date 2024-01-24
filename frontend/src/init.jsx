@@ -1,28 +1,37 @@
 import { io } from 'socket.io-client';
 import { Provider } from 'react-redux';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import filter from 'leo-profanity';
 import store from './slices/StoreReducer';
 import App from './App';
 import ru from './locales/ru';
 
+const rollbarConfig = {
+  accessToken: process.env.TOKEN_ROLLBAR,
+  environment: 'production',
+};
+
 const init = async () => {
-  await i18next
-    .use(initReactI18next)
-    .init({
-      lng: 'ru',
-      resources: {
-        ru,
-      },
-    });
+  filter.add(filter.getDictionary('ru'));
+  const i18n = i18next.createInstance();
+  await i18n.use(initReactI18next).init({
+    resources: { ru },
+    fallbackLng: 'ru',
+  });
 
   const socket = io();
   return (
-    <Provider store={store}>
-      <App socket={socket} />
-    </Provider>
+    <RollbarProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <App socket={socket} />
+        </Provider>
+      </ErrorBoundary>
+    </RollbarProvider>
   );
 };
 

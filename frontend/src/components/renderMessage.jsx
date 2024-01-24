@@ -20,7 +20,7 @@ const RenderMessageComponent = () => {
   }, [currentMessages]);
 
   return (
-    <>
+    <div id="messages-box" className="chat-messages overflow-auto px-5">
       { currentMessages.map((message) => (
         <div key={message.id} className="text-break mb-2">
           <b>{message.username}</b>
@@ -29,7 +29,7 @@ const RenderMessageComponent = () => {
         </div>
       ))}
       <span ref={messageRef} />
-    </>
+    </div>
   );
 };
 
