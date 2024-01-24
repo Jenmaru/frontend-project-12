@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
-import { actions as channelsAction } from '../slices/Channels.js';
+import { actions as channelsAction, getCurrentChannel } from '../slices/Channels.js';
 import { actions as messagesAction, selectors } from '../slices/Messages.js';
 import routes from '../routes.js';
 import Header from '../components/header.jsx';
@@ -21,7 +21,7 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const messagesMass = useSelector(selectors.selectAll);
-  const currentChannel = { id: 1, name: 'general' };
+  const currentChannel = useSelector(getCurrentChannel);
   const [value, setValue] = useState(true);
   const [modalType, setModalType] = useState('');
   const [channelId, setChannelId] = useState('');
@@ -55,16 +55,17 @@ const ChatPage = () => {
         const { data } = await axios.get(routes.usersPath(), {
           headers: auth.getAuth(),
         });
-        const { channels, messages } = data;
+        const { channels, messages, currentChannelId } = data;
         dispatch(channelsAction.addChannels(channels));
         dispatch(messagesAction.addMessages(messages));
+        dispatch(channelsAction.setChannelId(currentChannelId));
       } catch (e) {
         auth.logOut();
         toast.error(t('toast.networkError'), { toastId: `${t('toast.networkError')} error` });
       }
     };
     getResponse();
-  });
+  }, [auth, dispatch, t]);
 
   return (
     <>

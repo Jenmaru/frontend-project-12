@@ -1,16 +1,15 @@
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { PlusSquare } from 'react-bootstrap-icons';
 import cn from 'classnames';
-import ChatContext from '../contexts/chatContext.jsx';
-import { selectors } from '../slices/Channels';
+import { selectors, actions, getCurrentChannel } from '../slices/Channels';
 
 const ChannelItem = ({
+  handleChannel,
   channel,
   currentChannel,
-  setCurrentChannel,
   onChange,
   setId,
   t,
@@ -20,7 +19,9 @@ const ChannelItem = ({
       ? (
         <button
           type="button"
-          onClick={() => setCurrentChannel(channel)}
+          onClick={() => {
+            handleChannel(channel.id);
+          }}
           className={cn('w-100', 'rounded-0', 'text-start', 'btn', {
             'btn-secondary': channel.id === currentChannel.id,
           })}
@@ -35,7 +36,7 @@ const ChannelItem = ({
           <Button
             type="button"
             variant={channel.id === currentChannel.id && 'secondary'}
-            onClick={() => setCurrentChannel(channel)}
+            onClick={() => handleChannel(channel.id)}
             className="w-100 rounded-0 text-start text-truncate"
           >
             <span className="me-1">#</span>
@@ -53,7 +54,7 @@ const ChannelItem = ({
               href="#"
               onClick={() => {
                 setId(channel);
-                setCurrentChannel(channel);
+                handleChannel(channel.id);
                 onChange(false, 'removeChannel');
               }}
               id={channel.id}
@@ -77,10 +78,13 @@ const ChannelItem = ({
 );
 
 const ChannelsComponent = ({ onChange, setId }) => {
+  const dispatch = useDispatch();
   const channels = useSelector(selectors.selectAll);
-  const chatContext = useContext(ChatContext);
-  const { currentChannel, setCurrentChannel } = chatContext;
+  const currentChannel = useSelector(getCurrentChannel);
   const { t } = useTranslation();
+  const handleChannel = (id) => {
+    dispatch(actions.setChannelId(id));
+  };
 
   return (
     <>
@@ -94,10 +98,10 @@ const ChannelsComponent = ({ onChange, setId }) => {
       <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
         {channels.map((channel) => (
           <ChannelItem
+            handleChannel={handleChannel}
             key={channel.id}
             channel={channel}
             currentChannel={currentChannel}
-            setCurrentChannel={setCurrentChannel}
             onChange={onChange}
             setId={setId}
             t={t}

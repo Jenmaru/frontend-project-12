@@ -1,9 +1,13 @@
 import React, { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { actions, selectors } from '../slices/Channels.js';
 import ChatContext from '../contexts/chatContext';
 
 const RemoveModal = ({ onChange, channel, toast }) => {
+  const dispatch = useDispatch();
+  const channels = useSelector(selectors.selectAll);
   const { t } = useTranslation();
   const chatContext = useContext(ChatContext);
   const { removeChannel } = chatContext;
@@ -13,6 +17,7 @@ const RemoveModal = ({ onChange, channel, toast }) => {
 
   const remove = async () => {
     try {
+      dispatch(actions.setChannelId(channels[0].id));
       await removeChannel(channel.id);
       onChange(true);
       toast(t('toast.channelRemove'), 'success');

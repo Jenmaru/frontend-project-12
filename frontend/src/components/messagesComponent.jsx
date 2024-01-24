@@ -1,10 +1,12 @@
 import React, {
   useState, useContext, useRef, useEffect,
 } from 'react';
+import { useSelector } from 'react-redux';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/authProvider.jsx';
+import { getCurrentChannel } from '../slices/Channels.js';
 import ChatContext from '../contexts/chatContext';
 
 const MessagesComponent = () => {
@@ -12,7 +14,8 @@ const MessagesComponent = () => {
   const [text, setText] = useState('');
   const chatContext = useContext(ChatContext);
   const ref = useRef();
-  const { sendNewMessage, currentChannel } = chatContext;
+  const { sendNewMessage } = chatContext;
+  const currentChannel = useSelector(getCurrentChannel);
   const auth = useAuth();
 
   const sendMessage = async () => {

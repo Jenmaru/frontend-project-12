@@ -1,12 +1,11 @@
-import { useContext, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import LeoProfanity from 'leo-profanity';
 import { selectors } from '../slices/Messages.js';
-import ChatContext from '../contexts/chatContext.jsx';
+import { getCurrentChannel } from '../slices/Channels.js';
 
 const RenderMessageComponent = () => {
-  const chatContext = useContext(ChatContext);
-  const { currentChannel } = chatContext;
+  const currentChannel = useSelector(getCurrentChannel);
   const messageRef = useRef();
   const messages = useSelector(selectors.selectAll);
 

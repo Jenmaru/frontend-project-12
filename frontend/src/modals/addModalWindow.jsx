@@ -4,12 +4,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Form } from 'react-bootstrap';
 import LeoProfanity from 'leo-profanity';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ChatContext from '../contexts/chatContext';
-import { selectors } from '../slices/Channels';
+import { selectors, actions } from '../slices/Channels';
 
 const validate = (channelsName) => Yup.object().shape({
-  channelname: Yup.string()
+  channelName: Yup.string()
     .min(3, 'От 3 до 20 символов')
     .max(20, 'От 3 до 20 символов')
     .required('От 3 до 20 символов')
@@ -17,6 +17,7 @@ const validate = (channelsName) => Yup.object().shape({
 });
 
 const AddModal = ({ onChange, toast }) => {
+  const dispatch = useDispatch();
   const inputRef = useRef();
   const chatContext = useContext(ChatContext);
   const { createChannel } = chatContext;
@@ -36,11 +37,12 @@ const AddModal = ({ onChange, toast }) => {
 
   const formik = useFormik({
     initialValues: {
-      channelname: '',
+      channelName: '',
     },
     onSubmit: async (values) => {
       try {
-        await createChannel(LeoProfanity.clean(values.channelname));
+        await createChannel(LeoProfanity.clean(values.channelName));
+        dispatch(actions.setChannelId(1));
         onChange(true);
         toast(t('toast.channelAdd'), 'success');
       } catch {
@@ -70,17 +72,17 @@ const AddModal = ({ onChange, toast }) => {
                     <Form.Control
                       className="mb-2"
                       onChange={formik.handleChange}
-                      value={formik.values.channelname}
-                      name="channelname"
-                      id="channelname"
-                      autoComplete="channelname"
-                      isInvalid={formik.errors.channelname && formik.touched.channelname}
+                      value={formik.values.channelName}
+                      name="channelName"
+                      id="channelName"
+                      autoComplete="channelName"
+                      isInvalid={formik.errors.channelName && formik.touched.channelName}
                       required
                       ref={inputRef}
                     />
                     <label className="visually-hidden" htmlFor="name">{t('chatPage.channels.name')}</label>
-                    {formik.errors.channelname && formik.touched.channelname && (
-                    <div className="invalid-feedback">{formik.errors.channelname}</div>
+                    {formik.errors.channelName && formik.touched.channelName && (
+                    <div className="invalid-feedback">{formik.errors.channelName}</div>
                     )}
 
                     <div className="d-flex justify-content-end">
