@@ -90,7 +90,9 @@ const ChannelsComponent = ({ onChange, setId }) => {
   };
   const messagesMass = useSelector(messagesSelect.selectAll);
   const currentMessages = messagesMass.filter((message) => message.channelId === currentChannel.id);
-
+  const currentChannelName = useSelector(selectors.selectAll)
+    .find(({ id }) => id === currentChannel.id)
+    ?.name;
   return (
     <>
       <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
@@ -120,7 +122,7 @@ const ChannelsComponent = ({ onChange, setId }) => {
           <div className="bg-light mb-4 p-3 shadow-sm small">
             <p className="m-0">
               <b>
-                {`# ${currentChannel.name}`}
+                {`# ${currentChannelName}`}
               </b>
             </p>
             <span className="text-muted">{t('chatPage.chat.message', { count: currentMessages.length })}</span>

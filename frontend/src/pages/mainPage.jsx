@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -39,10 +39,6 @@ const MainPage = () => {
       }
     },
   });
-
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
 
   return (
     <div className="d-flex flex-column h-100">
