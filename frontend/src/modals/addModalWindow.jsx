@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Form } from 'react-bootstrap';
-import LeoProfanity from 'leo-profanity';
 import { useSelector } from 'react-redux';
+import LeoProfanity from 'leo-profanity';
 import ChatContext from '../contexts/chatContext';
 import { selectors } from '../slices/Channels';
 
@@ -28,8 +28,6 @@ const AddModal = ({ onChange, toast }) => {
   const channelsName = channels.map((channel) => channel.name);
 
   useEffect(() => {
-    const reCensor = LeoProfanity.getDictionary('ru');
-    LeoProfanity.add(reCensor);
     inputRef.current.focus();
   }, []);
 

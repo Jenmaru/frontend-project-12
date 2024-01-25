@@ -12,8 +12,6 @@ const RenderMessageComponent = () => {
   const currentMessages = messages.filter((message) => message.channelId === currentChannel.id);
 
   useEffect(() => {
-    const ruCensor = LeoProfanity.getDictionary('ru');
-    LeoProfanity.add(ruCensor);
     messageRef.current.scrollIntoView({
       behavior: 'smooth',
     });

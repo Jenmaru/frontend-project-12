@@ -57,7 +57,6 @@ const ChannelItem = ({
               href="#"
               onClick={() => {
                 setId(channel);
-                handleChannel(channel.id);
                 onChange(false, 'removeChannel');
               }}
               id={channel.id}

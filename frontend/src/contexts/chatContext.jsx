@@ -17,6 +17,7 @@ const ChatProvider = ({ socket, children }) => {
 
     socket.on('newChannel', (channel) => {
       dispatch(channelsActions.addChannel(channel));
+      dispatch(channelsActions.setChannelId(channel.id));
     });
 
     socket.on('removeChannel', (payload) => {
@@ -44,7 +45,6 @@ const ChatProvider = ({ socket, children }) => {
     await new Promise((resolve, reject) => {
       socket.timeout(5000).emit('newChannel', { name }, (err, response) => {
         if (response?.status === 'ok') {
-          dispatch(channelsActions.setChannelId(response.data.id));
           resolve(response);
         } else {
           reject(err);
