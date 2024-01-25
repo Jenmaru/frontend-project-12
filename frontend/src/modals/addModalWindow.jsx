@@ -16,14 +16,14 @@ const validate = (channelsName) => Yup.object().shape({
     .notOneOf(channelsName, 'Должно быть уникальным'),
 });
 
-const AddModal = ({ onChange, toast }) => {
+const AddModal = ({ handleClose, toast }) => {
   const dispatch = useDispatch();
   const inputRef = useRef();
   const chatContext = useContext(ChatContext);
   const { createChannel } = chatContext;
   const { t } = useTranslation();
   const handleClick = () => {
-    onChange(true);
+    handleClose();
   };
   const channels = useSelector(selectors.selectAll);
   const channelsName = channels.map((channel) => channel.name);
@@ -43,7 +43,7 @@ const AddModal = ({ onChange, toast }) => {
           .then((id) => setTimeout(() => {
             dispatch(actions.setChannelId(id));
           }, 100))
-          .then(() => onChange(true))
+          .then(() => handleClick())
           .then(() => toast(t('toast.channelAdd'), 'success'));
       } catch {
         toast(t('toast.error'), 'error');

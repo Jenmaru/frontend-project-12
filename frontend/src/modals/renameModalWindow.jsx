@@ -15,17 +15,19 @@ const validate = (channelsName) => Yup.object().shape({
     .notOneOf(channelsName, 'Должно быть уникальным'),
 });
 
-const RenameModal = ({ onChange, channel, toast }) => {
+const RenameModal = ({ handleClose, toast }) => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const chatContext = useContext(ChatContext);
   const { renameChannel } = chatContext;
   const handleClick = () => {
-    onChange(true);
+    handleClose();
   };
 
-  const channels = useSelector(selectors.selectAll);
-  const channelsName = channels.map((channelProp) => channelProp.name);
+  const id = useSelector((state) => state.modal.id);
+  const channel = useSelector((state) => selectors.selectById(state, id)).name;
+
+  const channelsName = useSelector(selectors.selectAll).map((chanel) => chanel.name);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -33,12 +35,12 @@ const RenameModal = ({ onChange, channel, toast }) => {
 
   const formik = useFormik({
     initialValues: {
-      channelname: channel.name,
+      channelname: channel,
     },
     onSubmit: async (values) => {
       try {
-        await renameChannel(channel.id, values.channelname);
-        onChange(true);
+        await renameChannel(id, values.channelname);
+        handleClose();
         toast(t('toast.channelRename'), 'success');
       } catch {
         toast(t('toast.error'), 'error');

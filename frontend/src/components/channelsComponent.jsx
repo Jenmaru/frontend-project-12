@@ -8,13 +8,14 @@ import { selectors, actions, getCurrentChannel } from '../slices/Channels';
 import { selectors as messagesSelect } from '../slices/Messages.js';
 import MessagesComponent from './messagesComponent.jsx';
 import RenderMessageComponent from './renderMessage.jsx';
+import { actions as modalAction } from '../slices/Modals.js';
 
 const ChannelItem = ({
   handleChannel,
   channel,
   currentChannel,
-  onChange,
-  setId,
+  remove,
+  rename,
   t,
 }) => (
   <li className="nav-item w-100" key={channel.id}>
@@ -53,20 +54,14 @@ const ChannelItem = ({
           <Dropdown.Menu>
             <Dropdown.Item
               href="#"
-              onClick={() => {
-                setId(channel);
-                onChange(false, 'removeChannel');
-              }}
+              onClick={() => remove(channel.id)}
               id={channel.id}
             >
               {t('chatPage.channels.remove')}
             </Dropdown.Item>
             <Dropdown.Item
               href="#"
-              onClick={() => {
-                setId(channel);
-                onChange(false, 'renameChannel');
-              }}
+              onClick={() => rename(channel.id)}
               id={channel.id}
             >
               {t('chatPage.channels.rename')}
@@ -77,7 +72,7 @@ const ChannelItem = ({
   </li>
 );
 
-const ChannelsComponent = ({ onChange, setId }) => {
+const ChannelsComponent = () => {
   const dispatch = useDispatch();
   const channels = useSelector(selectors.selectAll);
   const currentChannel = useSelector(getCurrentChannel);
@@ -90,12 +85,23 @@ const ChannelsComponent = ({ onChange, setId }) => {
   const currentChannelName = useSelector(selectors.selectAll)
     .find(({ id }) => id === currentChannel.id)
     ?.name;
+
+  const addChannel = () => {
+    dispatch(modalAction.openModal({ type: 'add' }));
+  };
+  const removeChannel = (id) => {
+    dispatch(modalAction.openModal({ type: 'remove', id }));
+  };
+  const renameChannel = (id) => {
+    dispatch(modalAction.openModal({ type: 'rename', id }));
+  };
+
   return (
     <>
       <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
         <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
           <b>{t('chatPage.channels.title')}</b>
-          <button onClick={() => onChange(false, 'addChannel')} type="button" className="p-0 text-primary btn btn-group-vertical">
+          <button onClick={addChannel} type="button" className="p-0 text-primary btn btn-group-vertical">
             <PlusSquare height="20" width="20" />
             <span className="visually-hidden">+</span>
           </button>
@@ -107,8 +113,8 @@ const ChannelsComponent = ({ onChange, setId }) => {
               key={channel.id}
               channel={channel}
               currentChannel={currentChannel}
-              onChange={onChange}
-              setId={setId}
+              remove={removeChannel}
+              rename={renameChannel}
               t={t}
             />
           ))}

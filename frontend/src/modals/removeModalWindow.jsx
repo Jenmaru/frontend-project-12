@@ -5,21 +5,22 @@ import { useTranslation } from 'react-i18next';
 import { actions, selectors } from '../slices/Channels.js';
 import ChatContext from '../contexts/chatContext';
 
-const RemoveModal = ({ onChange, channel, toast }) => {
+const RemoveModal = ({ handleClose, toast }) => {
   const dispatch = useDispatch();
   const channels = useSelector(selectors.selectAll);
   const { t } = useTranslation();
   const chatContext = useContext(ChatContext);
   const { removeChannel } = chatContext;
   const handleClick = () => {
-    onChange(true);
+    handleClose(true);
   };
+  const id = useSelector((state) => state.modal.id);
 
   const remove = async () => {
     try {
       dispatch(actions.setChannelId(channels[0].id));
-      await removeChannel(channel.id);
-      onChange(true);
+      await removeChannel(id);
+      handleClose(true);
       toast(t('toast.channelRemove'), 'success');
     } catch {
       toast(t('toast.error'), 'error');
