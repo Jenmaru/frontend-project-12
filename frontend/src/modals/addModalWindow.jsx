@@ -6,7 +6,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import LeoProfanity from 'leo-profanity';
 import ChatContext from '../contexts/chatContext';
-import { selectors } from '../slices/Channels';
+import { selectors, actions } from '../slices/Channels';
 
 const validate = (channelsName) => Yup.object().shape({
   channelName: Yup.string()
@@ -37,9 +37,10 @@ const AddModal = ({ onChange, toast }) => {
     },
     onSubmit: async (values) => {
       try {
-        await createChannel(LeoProfanity.clean(values.channelName));
-        onChange(true);
-        toast(t('toast.channelAdd'), 'success');
+        await createChannel(LeoProfanity.clean(values.channelName))
+          .then((result) => actions.setChannelId(result.data.id))
+          .then(() => onChange(true))
+          .then(() => toast(t('toast.channelAdd'), 'success'));
       } catch {
         toast(t('toast.error'), 'error');
       }
