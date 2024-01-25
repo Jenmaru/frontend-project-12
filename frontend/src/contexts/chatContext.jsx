@@ -41,7 +41,7 @@ const ChatProvider = ({ socket, children }) => {
   };
 
   const createChannel = (name) => new Promise((resolve, reject) => {
-    socket.timeout(5000).emit('newChannel', { name }, (err, response) => {
+    socket.timeout(1000).emit('newChannel', { name }, (err, response) => {
       if (response?.status === 'ok') {
         resolve(response);
       } else {
