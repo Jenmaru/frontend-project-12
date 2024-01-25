@@ -22,9 +22,7 @@ const ChannelItem = ({
       ? (
         <button
           type="button"
-          onClick={() => {
-            handleChannel(channel.id);
-          }}
+          onClick={() => handleChannel(channel.id)}
           className={cn('w-100', 'rounded-0', 'text-start', 'btn', {
             'btn-secondary': channel.id === currentChannel.id,
           })}

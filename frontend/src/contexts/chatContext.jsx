@@ -3,7 +3,7 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { actions as messagesActions } from '../slices/Messages.js';
-import { actions as channelsActions, getCurrentChannel } from '../slices/Channels.js';
+import { actions as channelsActions } from '../slices/Channels.js';
 
 const ChatContext = createContext({});
 
@@ -41,7 +41,7 @@ const ChatProvider = ({ socket, children }) => {
   };
 
   const createChannel = (name) => new Promise((resolve, reject) => {
-    socket.timeout(1000).emit('newChannel', { name }, (err, response) => {
+    socket.timeout(5000).emit('newChannel', { name }, (err, response) => {
       if (response?.status === 'ok') {
         resolve(response);
       } else {
@@ -79,7 +79,6 @@ const ChatProvider = ({ socket, children }) => {
     createChannel,
     removeChannel,
     renameChannel,
-    getCurrentChannel,
   }), []);
 
   return (
