@@ -40,7 +40,9 @@ const AddModal = ({ onChange, toast }) => {
       try {
         await createChannel(LeoProfanity.clean(values.channelName))
           .then((result) => result.data.id)
-          .then((id) => dispatch(actions.setChannelId(id)))
+          .then((id) => setTimeout(() => {
+            dispatch(actions.setChannelId(id));
+          }, 100))
           .then(() => onChange(true))
           .then(() => toast(t('toast.channelAdd'), 'success'));
       } catch {
