@@ -16,7 +16,7 @@ const ModalComponent = () => {
       : toast.error(message, { toastId: `${message} error` });
     return toastLabel;
   };
-  console.log(modal);
+
   const setModal = {
     add: <AddChannel show={show} handleClose={handleClose} toast={toastMessage} />,
     remove: <RemoveChannel show={show} handleClose={handleClose} toast={toastMessage} />,
