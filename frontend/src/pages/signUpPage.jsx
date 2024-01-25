@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,7 @@ const SignUpPage = () => {
   const passwordRef = useRef();
   const confirmRef = useRef();
   const navigate = useNavigate();
+  const [regFail, setRegFail] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -45,6 +46,9 @@ const SignUpPage = () => {
         if (err.isAxiosError && err.response.status === 401) {
           userNameRef.current.select();
           return;
+        }
+        if (err.response.status === 409) {
+          setRegFail(true);
         }
         throw err;
       }
@@ -106,7 +110,7 @@ const SignUpPage = () => {
                     && formik.errors.password ? 'is-invalid' : ''}
                       />
                       <Form.Label htmlFor="password">{t('placeholder.password')}</Form.Label>
-                      <div className="invalid-tooltip">{formik.errors.password}</div>
+                      <div className="invalid-tooltip">{formik.errors.password || regFail}</div>
                     </Form.Group>
                     <Form.Group className="form-floating mb-4">
                       <Form.Control
@@ -120,11 +124,12 @@ const SignUpPage = () => {
                         autoComplete="new-password"
                         ref={confirmRef}
                         required
+                        isInvalid={formik.errors.confirmpassword || regFail}
                         className={formik.touched.confirmpassword
                     && formik.errors.confirmpassword ? 'is-invalid' : ''}
                       />
                       <Form.Label htmlFor="confirmpassword">{t('placeholder.confirmPassword')}</Form.Label>
-                      <div className="invalid-tooltip">{formik.errors.confirmpassword}</div>
+                      <div className="invalid-tooltip">{formik.errors.confirmpassword || t('signUp.errors.alreadyRegistered')}</div>
                     </Form.Group>
                     <Button type="submit" variant="outline-primary w-100">{t('signUp.registration')}</Button>
                   </fieldset>
