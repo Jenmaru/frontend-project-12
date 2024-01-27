@@ -10,7 +10,7 @@ start-frontend:
 start-backend:
 	npx start-server
 
-start-production
+start-production:
 	npx start-server -s ./frontend/build
 
 build-production:
