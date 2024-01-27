@@ -14,4 +14,4 @@ start:
 	npx start-server -s ./frontend/build
 
 build: 
-	npm ci
+	make -C frontend start
