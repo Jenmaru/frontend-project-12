@@ -40,7 +40,7 @@ const SignUpPage = () => {
       try {
         const response = await axios.post(routes.createUserPath(), values);
         auth.logIn(response.data);
-        navigate(routes.chat);
+        navigate(routes.chat());
       } catch (err) {
         formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 401) {

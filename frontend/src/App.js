@@ -1,7 +1,7 @@
 import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
-import path from './routes.js';
+import routes from './routes.js';
 import SignUpPage from './pages/signUpPage.jsx';
 import ChatPage from './pages/chatPage.jsx';
 import MainPage from './pages/mainPage.jsx';
@@ -13,7 +13,7 @@ import { getCurrentChannel } from './slices/Channels.js';
 const Access = ({ children }) => {
   const auth = useAuth();
   if (auth.user === null) {
-    return <Navigate to={path.login} />;
+    return <Navigate to={routes.login()} />;
   }
   return children;
 };
@@ -23,7 +23,7 @@ const App = ({ socket }) => (
     <BrowserRouter>
       <Routes>
         <Route
-          path={path.chat}
+          path={routes.chat()}
           element={(
             <ChatProvider socket={socket}>
               <Access>
@@ -32,9 +32,9 @@ const App = ({ socket }) => (
             </ChatProvider>
               )}
         />
-        <Route path={path.login} element={<MainPage />} />
-        <Route path={path.notFound} element={<NotFoundPage />} />
-        <Route path={path.signup} element={<SignUpPage />} />
+        <Route path={routes.login()} element={<MainPage />} />
+        <Route path={routes.notFound()} element={<NotFoundPage />} />
+        <Route path={routes.signup()} element={<SignUpPage />} />
       </Routes>
     </BrowserRouter>
   </AuthProvider>

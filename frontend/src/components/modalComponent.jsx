@@ -2,9 +2,9 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { actions } from '../slices/Modals.js';
-import AddChannel from '../modals/addModalWindow.jsx';
-import RemoveChannel from '../modals/removeModalWindow.jsx';
-import RenameChannel from '../modals/renameModalWindow.jsx';
+import AddChannel from '../modals/add.jsx';
+import RemoveChannel from '../modals/remove.jsx';
+import RenameChannel from '../modals/rename.jsx';
 
 const ModalComponent = () => {
   const dispatch = useDispatch();

@@ -1,5 +1,5 @@
 import {
-  createContext, useMemo, useEffect,
+  createContext, useMemo, useEffect, useCallback,
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { actions as messagesActions } from '../slices/Messages.js';
@@ -17,6 +17,7 @@ const ChatProvider = ({ socket, children }) => {
 
     socket.on('newChannel', (channel) => {
       dispatch(channelsActions.addChannel(channel));
+      dispatch(channelsActions.setChannelId(channel.id));
     });
 
     socket.on('removeChannel', (payload) => {
@@ -26,60 +27,44 @@ const ChatProvider = ({ socket, children }) => {
     socket.on('renameChannel', (payload) => {
       dispatch(channelsActions.renameChannel({ id: payload.id, changes: payload }));
     });
-  });
+  }, [dispatch, socket]);
 
-  const sendNewMessage = async (message) => {
-    await new Promise((resolve, reject) => {
-      socket.timeout(5000).emit('newMessage', message, (err, response) => {
-        if (response?.status === 'ok') {
-          resolve(response);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  };
-
-  const createChannel = (name) => new Promise((resolve, reject) => {
-    socket.timeout(5000).emit('newChannel', { name }, (err, response) => {
+  const staticSocket = useCallback((action, value) => (new Promise((resolve, reject) => {
+    socket.timeout(5000).emit(action, value, (err, response) => {
       if (response?.status === 'ok') {
         resolve(response);
       } else {
         reject(err);
       }
     });
-  });
+  })), [socket]);
 
-  const removeChannel = async (id) => {
-    await new Promise((resolve, reject) => {
-      socket.timeout(5000).emit('removeChannel', { id }, (err, response) => {
-        if (response?.status === 'ok') {
-          resolve(response);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  };
+  const sendNewMessage = useCallback(
+    (message) => staticSocket('newMessage', message),
+    [staticSocket],
+  );
 
-  const renameChannel = async (id, name) => {
-    await new Promise((resolve, reject) => {
-      socket.timeout(5000).emit('renameChannel', { id, name }, (err, response) => {
-        if (response?.status === 'ok') {
-          resolve(response);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  };
+  const createChannel = useCallback(
+    (name) => staticSocket('newChannel', { name }),
+    [staticSocket],
+  );
+
+  const removeChannel = useCallback(
+    (id) => staticSocket('removeChannel', { id }),
+    [staticSocket],
+  );
+
+  const renameChannel = useCallback(
+    (id, name) => staticSocket('renameChannel', { id, name }),
+    [staticSocket],
+  );
 
   const value = useMemo(() => ({
     sendNewMessage,
     createChannel,
     removeChannel,
     renameChannel,
-  }), []);
+  }), [createChannel, removeChannel, renameChannel, sendNewMessage]);
 
   return (
     <ChatContext.Provider value={value}>

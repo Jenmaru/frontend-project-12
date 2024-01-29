@@ -20,13 +20,8 @@ const RenameModal = ({ handleClose, toast }) => {
   const inputRef = useRef();
   const chatContext = useContext(ChatContext);
   const { renameChannel } = chatContext;
-  const handleClick = () => {
-    handleClose();
-  };
-
   const id = useSelector((state) => state.modal.id);
   const channel = useSelector((state) => selectors.selectById(state, id)).name;
-
   const channelsName = useSelector(selectors.selectAll).map((chanel) => chanel.name);
 
   useEffect(() => {
@@ -66,7 +61,7 @@ const RenameModal = ({ handleClose, toast }) => {
           <div className="modal-content">
             <div className="modal-header">
               <div className="modal-title h4">{t('modal.rename')}</div>
-              <button onClick={handleClick} type="button" aria-label="Close" data-bs-dismiss="modal" className="btn btn-close" />
+              <button onClick={handleClose} type="button" aria-label="Close" data-bs-dismiss="modal" className="btn btn-close" />
             </div>
             <div className="modal-body">
               <Form onSubmit={formik.handleSubmit} class="">
@@ -90,7 +85,7 @@ const RenameModal = ({ handleClose, toast }) => {
                     )}
 
                     <div className="d-flex justify-content-end">
-                      <Button onClick={handleClick} type="button" variant="secondary me-2" disabled={formik.isSubmitting}>{t('modal.cancel')}</Button>
+                      <Button onClick={handleClose} type="button" variant="secondary me-2" disabled={formik.isSubmitting}>{t('modal.cancel')}</Button>
                       <Button type="submit" value="submit" variant="primary" disabled={formik.isSubmitting}>{t('modal.send')}</Button>
                     </div>
                   </div>

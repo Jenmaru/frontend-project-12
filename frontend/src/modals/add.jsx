@@ -1,12 +1,14 @@
-import React, { useRef, useEffect, useContext } from 'react';
+import React, {
+  useRef, useEffect, useContext,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Form } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import LeoProfanity from 'leo-profanity';
 import ChatContext from '../contexts/chatContext';
-import { selectors, actions } from '../slices/Channels';
+import { selectors } from '../slices/Channels';
 
 const validate = (channelsName) => Yup.object().shape({
   channelName: Yup.string()
@@ -17,14 +19,10 @@ const validate = (channelsName) => Yup.object().shape({
 });
 
 const AddModal = ({ handleClose, toast }) => {
-  const dispatch = useDispatch();
   const inputRef = useRef();
   const chatContext = useContext(ChatContext);
   const { createChannel } = chatContext;
   const { t } = useTranslation();
-  const handleClick = () => {
-    handleClose();
-  };
   const channels = useSelector(selectors.selectAll);
   const channelsName = channels.map((channel) => channel.name);
 
@@ -38,13 +36,9 @@ const AddModal = ({ handleClose, toast }) => {
     },
     onSubmit: async (values) => {
       try {
-        await createChannel(LeoProfanity.clean(values.channelName))
-          .then((result) => result.data.id)
-          .then((id) => setTimeout(() => {
-            dispatch(actions.setChannelId(id));
-          }, 100))
-          .then(() => handleClick())
-          .then(() => toast(t('toast.channelAdd'), 'success'));
+        await createChannel(LeoProfanity.clean(values.channelName));
+        handleClose();
+        toast(t('toast.channelAdd'), 'success');
       } catch {
         toast(t('toast.error'), 'error');
       }
@@ -63,7 +57,7 @@ const AddModal = ({ handleClose, toast }) => {
           <div className="modal-content">
             <div className="modal-header">
               <div className="modal-title h4">{t('modal.add')}</div>
-              <button onClick={handleClick} type="button" aria-label="Close" data-bs-dismiss="modal" className="btn btn-close" />
+              <button onClick={handleClose} type="button" aria-label="Close" data-bs-dismiss="modal" className="btn btn-close" />
             </div>
             <div className="modal-body">
               <Form onSubmit={formik.handleSubmit} class="">
@@ -86,7 +80,7 @@ const AddModal = ({ handleClose, toast }) => {
                     )}
 
                     <div className="d-flex justify-content-end">
-                      <Button onClick={handleClick} type="button" variant="secondary me-2" disabled={formik.isSubmitting}>{t('modal.cancel')}</Button>
+                      <Button onClick={handleClose} type="button" variant="secondary me-2" disabled={formik.isSubmitting}>{t('modal.cancel')}</Button>
                       <Button type="submit" value="submit" variant="primary" disabled={formik.isSubmitting}>{t('modal.send')}</Button>
                     </div>
                   </div>

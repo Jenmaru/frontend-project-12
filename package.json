@@ -13,8 +13,6 @@
   "author": "ivan",
   "license": "ISC",
   "dependencies": {
-    "@hexlet/chat-server": "^1.1.9",
-    "@reduxjs/toolkit": "^2.1.0",
-    "react-redux": "^9.1.0"
+    "@hexlet/chat-server": "^1.1.9"
   }
 }
