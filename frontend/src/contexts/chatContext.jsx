@@ -17,7 +17,6 @@ const ChatProvider = ({ socket, children }) => {
 
     socket.on('newChannel', (channel) => {
       dispatch(channelsActions.addChannel(channel));
-      dispatch(channelsActions.setChannelId(channel.id));
     });
 
     socket.on('removeChannel', (payload) => {
@@ -27,10 +26,10 @@ const ChatProvider = ({ socket, children }) => {
     socket.on('renameChannel', (payload) => {
       dispatch(channelsActions.renameChannel({ id: payload.id, changes: payload }));
     });
-  }, []);
+  }, [dispatch, socket]);
 
   const staticSocket = (action, value) => (new Promise((resolve, reject) => {
-    socket.timeout(5000).emit(action, value, (err, response) => {
+    socket.timeout(1000).emit(action, value, (err, response) => {
       if (response?.status === 'ok') {
         resolve(response);
       } else {
@@ -40,7 +39,9 @@ const ChatProvider = ({ socket, children }) => {
   }));
 
   const sendNewMessage = (message) => staticSocket('newMessage', message);
-  const createChannel = (name) => staticSocket('newChannel', { name });
+  const createChannel = (name) => staticSocket('newChannel', { name })
+    .then((response) => dispatch(channelsActions.addChannel(response.data)))
+    .then((response) => dispatch(channelsActions.setChannelId(response.payload.id)));
   const removeChannel = (id) => staticSocket('removeChannel', { id });
   const renameChannel = (id, name) => staticSocket('renameChannel', { id, name });
 
