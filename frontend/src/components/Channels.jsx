@@ -6,8 +6,8 @@ import { PlusSquare } from 'react-bootstrap-icons';
 import cn from 'classnames';
 import { selectors, actions, getCurrentChannel } from '../slices/Channels';
 import { selectors as messagesSelect } from '../slices/Messages.js';
-import MessagesComponent from './messagesComponent.jsx';
-import RenderMessageComponent from './renderMessage.jsx';
+import MessagesComponent from './Messages.jsx';
+import RenderMessageComponent from './RenderMessages.jsx';
 import { actions as modalAction } from '../slices/Modals.js';
 
 const ChannelItem = ({

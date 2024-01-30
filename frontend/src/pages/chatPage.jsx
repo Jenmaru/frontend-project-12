@@ -6,10 +6,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import { actions as channelsAction } from '../slices/Channels.js';
 import routes from '../routes.js';
 import Header from '../components/header.jsx';
-import ChannelsComponent from '../components/channelsComponent.jsx';
+import ChannelsComponent from '../components/Channels.jsx';
 import { useAuth } from '../contexts/authProvider.jsx';
 import { actions as messagesAction } from '../slices/Messages.js';
-import ModalComponent from '../components/modalComponent.jsx';
+import ModalComponent from '../components/Modal.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ChatPage = () => {

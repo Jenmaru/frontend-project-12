@@ -1,5 +1,5 @@
 import {
-  createContext, useEffect,
+  createContext, useEffect, useMemo, useCallback,
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { actions as messagesActions } from '../slices/Messages.js';
@@ -28,7 +28,7 @@ const ChatProvider = ({ socket, children }) => {
     });
   }, [dispatch, socket]);
 
-  const staticSocket = (action, value) => (new Promise((resolve, reject) => {
+  const socValue = useCallback((action, value) => (new Promise((resolve, reject) => {
     socket.timeout(1000).emit(action, value, (err, response) => {
       if (response?.status === 'ok') {
         resolve(response);
@@ -36,23 +36,27 @@ const ChatProvider = ({ socket, children }) => {
         reject(err);
       }
     });
-  }));
+  })), [socket]);
 
-  const sendNewMessage = (message) => staticSocket('newMessage', message);
-  const createChannel = (name) => staticSocket('newChannel', { name })
-    .then((response) => dispatch(channelsActions.addChannel(response.data)))
-    .then((response) => dispatch(channelsActions.setChannelId(response.payload.id)));
-  const removeChannel = (id) => staticSocket('removeChannel', { id });
-  const renameChannel = (id, name) => staticSocket('renameChannel', { id, name });
+  const sendNewMessage = useCallback((message) => socValue('newMessage', message), [socValue]);
+
+  const createChannel = useCallback((name) => socValue('newChannel', { name })
+    .then((res) => dispatch(channelsActions.addChannel(res.data)))
+    .then((res) => dispatch(channelsActions.setChannelId(res.payload.id))), [dispatch, socValue]);
+
+  const removeChannel = useCallback((id) => socValue('removeChannel', { id }), [socValue]);
+
+  const renameChannel = useCallback((id, name) => socValue('renameChannel', { id, name }), [socValue]);
+
+  const values = useMemo(() => ({
+    sendNewMessage,
+    createChannel,
+    removeChannel,
+    renameChannel,
+  }), [createChannel, removeChannel, renameChannel, sendNewMessage]);
 
   return (
-    <ChatContext.Provider value={{
-      sendNewMessage,
-      createChannel,
-      removeChannel,
-      renameChannel,
-    }}
-    >
+    <ChatContext.Provider value={values}>
       {children}
     </ChatContext.Provider>
   );
