@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import { actions as channelsAction } from '../slices/Channels.js';
 import routes from '../routes.js';
-import Header from '../components/header.jsx';
+import HeaderComponent from '../components/Header.jsx';
 import ChannelsComponent from '../components/Channels.jsx';
 import { useAuth } from '../contexts/authProvider.jsx';
 import { actions as messagesAction } from '../slices/Messages.js';
@@ -38,7 +38,7 @@ const ChatPage = () => {
   return (
     <>
       <div className="d-flex flex-column h-100">
-        <Header />
+        <HeaderComponent />
         <div className="container h-100 my-4 overflow-hidden rounded shadow">
           <div className="row h-100 bg-white flex-md-row">
             <ChannelsComponent />

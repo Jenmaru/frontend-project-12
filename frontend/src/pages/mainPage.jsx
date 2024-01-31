@@ -1,19 +1,18 @@
 import React, { useState, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { useAuth } from '../contexts/authProvider.jsx';
 import routes from '../routes.js';
-import Header from '../components/header.jsx';
+import HeaderComponent from '../components/Header.jsx';
 
 const MainPage = () => {
   const auth = useAuth();
   const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -26,8 +25,7 @@ const MainPage = () => {
       try {
         const response = await axios.post(routes.loginPath(), values);
         auth.logIn(response.data);
-        const { from } = location.state || { from: { pathname: '/' } };
-        navigate(from);
+        navigate(routes.chat());
       } catch (err) {
         formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 401) {
@@ -42,7 +40,7 @@ const MainPage = () => {
 
   return (
     <div className="d-flex flex-column h-100">
-      <Header />
+      <HeaderComponent />
       <div className="container-fluid h-100">
         <div className="row justify-content-center align-content-center h-100">
           <div className="col-12 col-md-8 col-xxl-6">

@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import { useAuth } from '../contexts/authProvider.jsx';
 import routes from '../routes.js';
-import Header from '../components/header.jsx';
+import HeaderComponent from '../components/Header.jsx';
 
 const loginSchema = Yup.object().shape({
   username: Yup.string()
@@ -63,7 +63,7 @@ const SignUpPage = () => {
 
   return (
     <div className="d-flex flex-column h-100">
-      <Header />
+      <HeaderComponent />
       <div className="container-fluid h-100">
         <div className="row justify-content-center align-content-center h-100">
           <div className="col-12 col-md-8 col-xxl-6">
