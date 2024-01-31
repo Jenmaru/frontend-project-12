@@ -2,10 +2,10 @@ import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
 import routes from './routes.js';
-import SignUpPage from './pages/signUpPage.jsx';
-import ChatPage from './pages/chatPage.jsx';
-import MainPage from './pages/mainPage.jsx';
-import NotFoundPage from './pages/page404.jsx';
+import SignUpPage from './pages/SignUp.jsx';
+import ChatPage from './pages/Chat.jsx';
+import MainPage from './pages/SignIn.jsx';
+import NotFoundPage from './pages/Page404.jsx';
 import { ChatProvider } from './contexts/chatContext.jsx';
 import AuthProvider, { useAuth } from './contexts/authProvider.jsx';
 import { getCurrentChannel } from './slices/Channels.js';
